@@ -1,7 +1,10 @@
 {
-  "name": "web",
-  "version": "0.0.0",
+  "name": "uwf-monorepo",
+  "version": "0.0.1",
   "private": true,
+  "repository": "https://github.com/piglovesyou/uwf",
+  "author": "piglovesyou <thepiglovesyou@gmail.com>",
+  "license": "MIT",
   "engines": {
     "node": ">=6.13.1",
     "npm": ">=3.10.10"
