@@ -1,0 +1,17 @@
+{
+  "name": "uwf",
+  "version": "0.0.1",
+  "license": "MIT",
+  "engines": {
+    "node": ">=10.15.3"
+  },
+  "browserslist": [
+    ">1%",
+    "last 4 versions",
+    "Firefox ESR",
+    "not ie < 9"
+  ],
+  "bin": {
+    "uwf": "bin/uwf"
+  }
+}
