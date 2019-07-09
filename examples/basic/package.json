@@ -8,6 +8,12 @@
     "node-fetch": "^2.6.0",
     "normalize.css": "^8.0.1",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "uwf": "file:../../packages/uwf"
+  },
+  "scripts": {
+    "start": "uwf start",
+    "build": "uwf build",
+    "codegen": "uwf codegen"
   }
 }
