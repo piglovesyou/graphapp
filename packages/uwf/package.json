@@ -44,6 +44,12 @@
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.4.0"
+    "@babel/cli": "^7.4.0",
+    "@piglovesyou/enhanced-resolve": "^4.3.0",
+    "rimraf": "^2.6.3",
+    "copyfiles": "^2.1.0"
+  },
+  "scripts": {
+    "prepack": "rimraf dist && copyfiles -u 1 src/**/*.css dist && babel --extensions '.ts,.tsx,.js' -d dist src"
   }
 }
