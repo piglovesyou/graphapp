@@ -9,8 +9,8 @@
 
 import React, { ReactNode } from 'react';
 import { ApolloProvider } from 'react-apollo';
-import StyleContext from 'isomorphic-style-loader/StyleContext';
-import AppContext, { AppContextTypes } from '../context';
+import StyleContext from '@piglovesyou/isomorphic-style-loader/StyleContext';
+import AppContext, { AppContextTypes } from '../app/AppContext';
 
 interface Props {
   insertCss: Function;

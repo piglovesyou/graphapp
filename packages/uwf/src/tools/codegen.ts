@@ -1,6 +1,10 @@
-import { join as pathJoin } from 'path';
 import { generate } from '@graphql-codegen/cli';
-import { cleanDir } from './lib/fs';
+import getPort from 'get-port';
+import path from 'path';
+import { ApolloServer } from 'apollo-server';
+import { makeExecutableSchema } from 'apollo-server-express';
+import { buildDir, genDir, srcDir, userDir } from './lib/dirs';
+import prepareDeps from './lib/prepareDeps';
 import runWebpack from './lib/runWebpack';
 import webpackConfig from './webpack.config';
 
@@ -11,45 +15,61 @@ const [, serverConfig] = webpackConfig;
  * a running GraphQL server, it launches a server for the use.
  */
 export default async function codegen() {
-  const promiseRemoveOldTypes = cleanDir('{./,src/**/}__generated__');
+  // const promiseRemoveOldTypes = new Promise(resolve =>
+  //   rimraf(path.resolve(userDir, '{./,src/**/}__generated__'), resolve),
+  // );
+
+  await prepareDeps();
 
   const promiseCompileSchemaJs = await runWebpack(
     {
       ...serverConfig,
-      entry: './src/data/schema',
+      entry: path.join(srcDir, 'app/schema'),
       output: {
-        path: serverConfig.output.path,
+        path: serverConfig!.output!.path,
         filename: 'schema.js',
         libraryTarget: 'commonjs2',
       },
     },
+    // @ts-ignore
     serverConfig.stats,
   );
 
-  await Promise.all([promiseRemoveOldTypes, promiseCompileSchemaJs]);
+  const promisePort = getPort();
+
+  const [port] = await Promise.all([
+    promisePort,
+    // promiseRemoveOldTypes,
+    promiseCompileSchemaJs,
+  ]);
 
   // eslint-disable-next-line global-require, import/no-dynamic-require, import/no-unresolved
-  const builtSchema = require('../build/schema').default;
-
-  const genTargetDir = pathJoin(
-    process.cwd(),
-    'src/__generated__/dataBinders.tsx',
-  );
+  const builtSchema = require(path.join(buildDir, 'schema')).default;
+  const server = new ApolloServer({
+    schema: makeExecutableSchema(builtSchema),
+  });
+  const { server: httpServer } = await server.listen({ port });
 
   await generate(
     {
-      schema: builtSchema.typeDefs,
-      documents: './src/**/*.{graphql,ts,tsx}',
+      schema: `http://localhost:${port}/graphql`,
+      documents: path.join(userDir, '{routes,components}/**/*.graphql'),
       generates: {
-        [genTargetDir]: {
+        [path.join(genDir, 'dataBinders.tsx')]: {
           plugins: [
             'typescript',
             'typescript-operations',
             'typescript-react-apollo',
           ],
+          config: {
+            // withHOC: false,
+            withHooks: true,
+          },
         },
       },
     },
     true,
   );
+
+  await new Promise(resolve => httpServer.close(resolve));
 }

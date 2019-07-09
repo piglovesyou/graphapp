@@ -7,6 +7,8 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
+/* eslint-disable global-require */
+
 import path from 'path';
 import express, { Request, Response, Application } from 'express';
 import browserSync from 'browser-sync';
@@ -14,9 +16,12 @@ import webpack, { Compiler, Configuration } from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware';
+import { buildDir, srcDir } from './lib/dirs';
 import webpackConfig from './webpack.config';
 import run, { format } from './run';
 import clean from './clean';
+
+import codegen from './codegen';
 
 const isDebug = !process.argv.includes('--release');
 
@@ -70,15 +75,21 @@ let server: Application;
  */
 async function start() {
   if (server) return server;
+
+  await run(codegen);
+
   server = express();
   server.use(errorOverlayMiddleware());
+  // @ts-ignore
   server.use(express.static(path.resolve(__dirname, '../public')));
 
   // Configure client-side hot module replacement
   const clientConfig = webpackConfig.find(
     config => config.name === 'client',
   ) as any;
-  clientConfig.entry.client = ['./tools/lib/webpackHotDevClient']
+  clientConfig.entry.client = [
+    path.join(srcDir, 'tools/lib/webpackHotDevClient'),
+  ]
     .concat(clientConfig.entry.client)
     .sort(
       (a: string, b: string) =>
@@ -141,12 +152,13 @@ async function start() {
   // https://github.com/glenjamin/webpack-hot-middleware
   server.use(webpackHotMiddleware(clientCompiler, { log: false }));
 
+  const serverScriptPath = path.join(buildDir, 'server');
+
   let app: Application;
   let hot: any;
   function reloadApp() {
-    delete require.cache[require.resolve('../build/server')];
-    // eslint-disable-next-line global-require
-    const compiled = require('../build/server');
+    delete require.cache[require.resolve(serverScriptPath)];
+    const compiled = require(serverScriptPath);
     app = compiled.default;
     hot = compiled.hot;
   }
@@ -163,6 +175,7 @@ async function start() {
 
   server.use((req: Request, res: Response) => {
     appPromise
+      // @ts-ignore
       .then(() => app.handle(req, res))
       .catch(error => console.error(error));
   });
@@ -224,7 +237,7 @@ async function start() {
   console.info(`[${format(timeStart)}] Launching server...`);
 
   // Load compiled src/server.js as a middleware
-  // eslint-disable-next-line global-require, import/no-unresolved
+  // eslint-disable-next-line import/no-unresolved
   reloadApp();
   appPromiseIsResolved = true;
   appPromiseResolve!();
@@ -234,10 +247,10 @@ async function start() {
     browserSync.create().init(
       {
         // https://www.browsersync.io/docs/options
-        server: { baseDir: '../public' },
+        server: 'src/server.js',
         middleware: [server],
-        open: process.argv.includes('--silent') ? false : 'local',
-        ...(isDebug ? {} : { notify: false, ui: {} }),
+        open: !process.argv.includes('--silent'),
+        ...(isDebug ? {} : { notify: false, ui: false }),
       },
       (error, bs) => (error ? reject(error) : resolve(bs)),
     ),

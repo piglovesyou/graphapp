@@ -14,19 +14,18 @@ import WebpackAssetsManifest from 'webpack-assets-manifest';
 import nodeExternals from 'webpack-node-externals';
 import cssnano from 'cssnano';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import { WebpackOptions } from 'webpack/declarations/WebpackOptions';
+import MultiAliasPlugin from '@piglovesyou/enhanced-resolve/lib/AliasPlugin';
+import { genDir, libDir, userDir, srcDir, buildDir } from './lib/dirs';
 import overrideRules from './lib/overrideRules';
-import pkg from '../package.json';
+import pkg from '../../package.json';
 import postcssConfig from './postcss.config';
-
-const ROOT_DIR = path.resolve(__dirname, '..');
-const resolvePath = (...args: string[]) => path.resolve(ROOT_DIR, ...args);
-const SRC_DIR = resolvePath('src');
-const BUILD_DIR = resolvePath('build');
 
 const isDebug = !process.argv.includes('--release');
 const isVerbose = process.argv.includes('--verbose');
 const isAnalyze =
   process.argv.includes('--analyze') || process.argv.includes('--analyse');
+const isBuilding = process.argv.includes('build');
 
 const reScript = /\.(ts|tsx|js|jsx|mjs)$/;
 const reGraphql = /\.(graphql|gql)$/;
@@ -42,13 +41,13 @@ const staticAssetName = isDebug
 // client-side (client.js) and server-side (server.js) bundles
 // -----------------------------------------------------------------------------
 
-const config = {
-  context: ROOT_DIR,
+const config: WebpackOptions = {
+  context: libDir,
 
   mode: isDebug ? 'development' : 'production',
 
   output: {
-    path: resolvePath(BUILD_DIR, 'public/assets'),
+    path: path.join(buildDir, 'public/assets'),
     publicPath: '/assets/',
     pathinfo: isVerbose,
     filename: isDebug ? '[name].js' : '[name].[chunkhash:8].js',
@@ -68,9 +67,12 @@ const config = {
       // Rules for JS / JSX
       {
         test: reScript,
-        include: [SRC_DIR, resolvePath('tools')],
+        include: [srcDir, path.join(libDir, 'tools'), genDir, userDir],
         loader: 'babel-loader',
         options: {
+          // @piglovesyou: Necessary to track node_modules
+          cwd: libDir,
+
           // https://github.com/babel/babel-loader#options
           cacheDirectory: isDebug,
 
@@ -117,7 +119,8 @@ const config = {
       {
         test: reGraphql,
         exclude: /node_modules/,
-        loader: 'graphql-tag/loader',
+        loader: 'raw-loader',
+        // loader: 'graphql-tag/loader',
       },
 
       // Rules for Style Sheets
@@ -127,19 +130,27 @@ const config = {
           // Convert CSS into JS module
           {
             issuer: { not: [reStyle] },
-            use: 'isomorphic-style-loader',
+            use: '@piglovesyou/isomorphic-style-loader',
           },
 
           // Process external/third-party styles
           {
-            exclude: SRC_DIR,
+            exclude: [
+              srcDir,
+              path.join(userDir, 'routes'),
+              path.join(userDir, 'components'),
+            ],
             loader: 'css-loader',
             options: {
               sourceMap: isDebug,
             },
           },
           {
-            exclude: SRC_DIR,
+            exclude: [
+              srcDir,
+              path.join(userDir, 'routes'),
+              path.join(userDir, 'components'),
+            ],
             loader: 'postcss-loader',
             options: {
               plugins: [
@@ -152,18 +163,21 @@ const config = {
 
           // Process internal/project styles (from src folder)
           {
-            include: SRC_DIR,
+            include: [
+              srcDir,
+              path.join(userDir, 'routes'),
+              path.join(userDir, 'components'),
+            ],
             loader: 'css-loader',
             options: {
               // CSS Loader https://github.com/webpack/css-loader
               importLoaders: 1,
               sourceMap: isDebug,
               // CSS Modules https://github.com/css-modules/css-modules
-              modules: {
-                localIdentName: isDebug
-                  ? '[name]-[local]-[hash:base64:5]'
-                  : '[hash:base64:5]',
-              },
+              modules: true,
+              localIdentName: isDebug
+                ? '[name]-[local]-[hash:base64:5]'
+                : '[hash:base64:5]',
             },
           },
 
@@ -239,7 +253,7 @@ const config = {
       // Convert Markdown into HTML
       {
         test: /\.md$/,
-        loader: path.resolve(__dirname, './lib/markdown-loader'),
+        loader: path.resolve(srcDir, 'tools/lib/markdown-loader'),
       },
 
       // Return public URL for all assets unless explicitly excluded
@@ -265,7 +279,8 @@ const config = {
         ? []
         : [
             {
-              test: resolvePath(
+              test: path.join(
+                libDir,
                 'node_modules/react-deep-force-update/lib/index.js',
               ),
               loader: 'null-loader',
@@ -276,10 +291,30 @@ const config = {
 
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.json'],
+    mainFields: ['main', 'module'],
+    modules: [
+      path.join(libDir, 'node_modules'),
+      // TODO: should be erased
+      path.join(userDir, 'node_modules'),
+      'node_modules',
+    ],
+    plugins: [
+      new MultiAliasPlugin(
+        'described-resolve',
+        [
+          // { name: 'uwf', alias: path.join(srcDir, 'app') },
+          { name: 'uwf/dataBinders', alias: path.join(genDir, 'dataBinders') },
+          { name: 'uwf', alias: path.join(srcDir, 'app') },
+          { name: '@config@', alias: path.join(userDir, 'config') },
+          { name: '@config@', alias: path.join(srcDir, 'config') },
+        ],
+        'resolve',
+      ),
+    ],
   },
 
   resolveLoader: {
-    extensions: ['.ts', '.js', '.json'],
+    extensions: ['.ts', '.mjs', '.js', '.json'],
   },
 
   // Don't attempt to continue if there are any errors.
@@ -300,6 +335,7 @@ const config = {
     reasons: isDebug,
     timings: true,
     version: isVerbose,
+    errorDetails: true,
   },
 
   // Choose a developer tool to enhance debugging
@@ -311,14 +347,18 @@ const config = {
 // Configuration for the client-side bundle (client.js)
 // -----------------------------------------------------------------------------
 
-const clientConfig = {
+const clientConfig: WebpackOptions = {
   ...config,
 
   name: 'client',
   target: 'web',
 
   entry: {
-    client: ['./src/client'],
+    client: [
+      'core-js/stable',
+      'regenerator-runtime/runtime',
+      path.join(srcDir, 'app/client'),
+    ],
   },
 
   plugins: [
@@ -332,7 +372,7 @@ const clientConfig = {
     // Emit a file with assets paths
     // https://github.com/webdeveric/webpack-assets-manifest#options
     new WebpackAssetsManifest({
-      output: `${BUILD_DIR}/asset-manifest.json`,
+      output: `${buildDir}/asset-manifest.json`,
       publicPath: true,
       writeToDisk: true,
       customize: ({ key, value }: { key: string; value: string }) => {
@@ -342,7 +382,7 @@ const clientConfig = {
       },
       done: (manifest: any, stats: any) => {
         // Write chunk-manifest.json.json
-        const chunkFileName = `${BUILD_DIR}/chunk-manifest.json`;
+        const chunkFileName = `${buildDir}/chunk-manifest.json`;
         try {
           const fileFilter = (file: string) => !file.endsWith('.map');
           const addPath = (file: string) => manifest.getPublicPath(file);
@@ -407,19 +447,19 @@ const clientConfig = {
 // Configuration for the server-side bundle (server.js)
 // -----------------------------------------------------------------------------
 
-const serverConfig = {
+const serverConfig: WebpackOptions = {
   ...config,
 
   name: 'server',
   target: 'node',
 
   entry: {
-    server: ['./src/server'],
+    server: [path.join(srcDir, 'app/server')],
   },
 
   output: {
     ...config.output,
-    path: BUILD_DIR,
+    path: buildDir,
     filename: '[name].js',
     chunkFilename: 'chunks/[name].js',
     libraryTarget: 'commonjs2',
@@ -434,7 +474,7 @@ const serverConfig = {
   module: {
     ...config.module,
 
-    rules: overrideRules(config.module.rules, (rule: any) => {
+    rules: overrideRules(config.module!.rules, (rule: any) => {
       // Override babel-preset-env configuration for Node.js
       if (rule.loader === 'babel-loader') {
         return {
@@ -484,7 +524,8 @@ const serverConfig = {
     './chunk-manifest.json',
     './asset-manifest.json',
     nodeExternals({
-      whitelist: [reStyle, reImage],
+      whitelist: [reStyle, reImage, /^uwf\/?/],
+      modulesDir: path.join(libDir, '../../node_modules'),
     }),
   ],
 
@@ -494,6 +535,7 @@ const serverConfig = {
     new webpack.DefinePlugin({
       'process.env.BROWSER': false,
       __DEV__: isDebug,
+      __userDir__: isBuilding ? '__dirname' : `"${userDir}"`,
     }),
 
     // Adds a banner to the top of each generated chunk

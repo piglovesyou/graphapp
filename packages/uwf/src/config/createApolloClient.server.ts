@@ -1,24 +1,30 @@
-import { ApolloClient } from 'apollo-client';
+import { ApolloClient, Resolvers } from 'apollo-client';
 import { from } from 'apollo-link';
 import { onError } from 'apollo-link-error';
 import { SchemaLink } from 'apollo-link-schema';
+import { DocumentNode } from 'graphql';
 import merge from 'lodash.merge';
-import gql from 'graphql-tag';
-import createCache from './createCache';
-import {
-  resolvers as clientResolvers,
-  schema as clientSchema,
-  defaults as cacheDefaults,
-} from '../../data/graphql/OnMemoryState/schema';
+import { ApolloCache } from 'apollo-cache';
 
-export default function createApolloClient(
-  schema: SchemaLink.Options,
-  partialCacheDefaults: Object,
-) {
-  const cache = createCache();
+type ServerApolloClientArgs = {
+  schemaArgs: SchemaLink.Options;
+  partialCacheDefaults: Object;
+  apolloCache: ApolloCache<any>;
+  clientDefaults: Object;
+  clientResolvers: Resolvers;
+  clientTypeDefs: DocumentNode;
+};
 
-  cache.writeData({
-    data: merge(cacheDefaults, partialCacheDefaults),
+export default function createApolloClient({
+  schemaArgs,
+  partialCacheDefaults,
+  apolloCache,
+  clientDefaults,
+  clientResolvers,
+  clientTypeDefs,
+}: ServerApolloClientArgs) {
+  apolloCache.writeData({
+    data: merge({}, clientDefaults, partialCacheDefaults),
   });
 
   const link = from([
@@ -31,14 +37,14 @@ export default function createApolloClient(
         );
       if (networkError) console.warn(`[Network error]: ${networkError}`);
     }),
-    new SchemaLink({ ...schema }),
+    new SchemaLink({ ...schemaArgs }),
   ]);
 
   return new ApolloClient({
     // @ts-ignore
     link,
-    cache,
-    typeDefs: gql(clientSchema),
+    cache: apolloCache,
+    typeDefs: clientTypeDefs,
     resolvers: clientResolvers,
     ssrMode: true,
     queryDeduplication: true,

@@ -6,11 +6,12 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE.txt file in the root directory of this source tree.
  */
+/* eslint-disable global-require */
 
 import path from 'path';
 import chokidar from 'chokidar';
+import { buildDir, libDir, userDir } from './lib/dirs';
 import { writeFile, copyFile, makeDir, copyDir, cleanDir } from './lib/fs';
-import pkg from '../package.json';
 import { format } from './run';
 
 /**
@@ -19,14 +20,20 @@ import { format } from './run';
  */
 async function copy() {
   await makeDir('build');
+  const libPkg = require(path.join(libDir, 'package.json'));
+  const userPkg = require(path.join(userDir, 'package.json'));
+  delete userPkg.dependencies.uwf;
   await Promise.all([
     writeFile(
-      'build/package.json',
+      path.join(buildDir, 'package.json'),
       JSON.stringify(
         {
           private: true,
-          engines: pkg.engines,
-          dependencies: pkg.dependencies,
+          engines: userPkg.engines || libPkg.engines,
+          dependencies: {
+            ...libPkg.dependencies,
+            ...userPkg.dependencies,
+          },
           scripts: {
             start: 'node server.js',
           },
@@ -35,9 +42,9 @@ async function copy() {
         2,
       ),
     ),
-    copyFile('LICENSE.txt', 'build/LICENSE.txt'),
-    copyFile('yarn.lock', 'build/yarn.lock'),
-    copyDir('public', 'build/public'),
+    // copyFile('LICENSE.txt', 'build/LICENSE.txt'),
+    // copyFile('yarn.lock', 'build/yarn.lock'),
+    copyDir(path.join(userDir, 'public'), path.join(buildDir, 'public')),
   ]);
 
   if (process.argv.includes('--watch')) {

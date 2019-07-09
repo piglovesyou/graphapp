@@ -14,14 +14,20 @@ import deepForceUpdate from 'react-deep-force-update';
 import queryString from 'query-string';
 import gql from 'graphql-tag';
 import { createPath, Location } from 'history';
-import App from './components/App';
+import App from '@config@/App';
 import history from './history';
+import createCache from '@config@/createCache';
 import { updateMeta } from './DOMUtils';
-import createApolloClient from './core/createApolloClient/createApolloClient.client';
+import createApolloClient from '@config@/createApolloClient.client';
 import router from './router';
-import { AppContextTypes } from './context';
+import { AppContextTypes } from './AppContext';
+import { clientResolvers, clientTypeDefs } from './clientSchema';
 
-const apolloClient = createApolloClient();
+const apolloClient = createApolloClient({
+  clientTypeDefs,
+  clientResolvers,
+  apolloCache: createCache(),
+});
 
 // Enables critical path CSS rendering
 // https://github.com/kriasoft/isomorphic-style-loader

@@ -6,6 +6,7 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE.txt file in the root directory of this source tree.
  */
+/* eslint-disable no-underscore-dangle */
 
 import path from 'path';
 import express, { NextFunction, Request, Response } from 'express';
@@ -18,20 +19,26 @@ import ReactDOM from 'react-dom/server';
 import PrettyError from 'pretty-error';
 import { ApolloServer, makeExecutableSchema } from 'apollo-server-express';
 import { getDataFromTree } from 'react-apollo';
-import { AppContextTypes } from './context';
-import createApolloClient from './core/createApolloClient/createApolloClient.server';
-import App from './components/App';
-import Html from './components/Html';
-import { ErrorPageWithoutStyle } from './routes/error/ErrorPage';
-import errorPageStyle from './routes/error/ErrorPage.css';
-import passport from './passport';
+import createApolloClient from '@config@/createApolloClient.server';
+import App from '@config@/App';
+import Html from '@config@/Html';
+import { ErrorPageWithoutStyle } from '@config@/error-page/ErrorPage';
+import errorPageStyle from '@config@/error-page/ErrorPage.css';
+import passport from '@config@/passport';
+import config from '@config@/config';
+import createCache from '@config@/createCache';
 import router from './router';
-import models from './data/models';
-import schema from './data/schema';
+// import models from './data/models';
+import schema from './schema';
 // import assets from './asset-manifest.json'; // eslint-disable-line import/no-unresolved
 // @ts-ignore
 import chunks from './chunk-manifest.json'; // eslint-disable-line import/no-unresolved
-import config from './config';
+import { AppContextTypes } from './AppContext';
+import {
+  clientDefaults,
+  clientResolvers,
+  clientTypeDefs,
+} from './clientSchema';
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason);
@@ -59,7 +66,8 @@ app.set('trust proxy', config.trustProxy);
 //
 // Register Node.js middleware
 // -----------------------------------------------------------------------------
-app.use(express.static(path.resolve(__dirname, 'public')));
+// @ts-ignore
+app.use(express.static(path.resolve(__userDir__, 'public')));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -114,7 +122,7 @@ app.get(
 // https://github.com/graphql/express-graphql#options
 
 const server = new ApolloServer({
-  ...schema,
+  schema: makeExecutableSchema(schema),
   uploads: false,
   introspection: __DEV__,
   playground: __DEV__,
@@ -133,20 +141,23 @@ app.get('*', async (req, res, next) => {
     // Enables critical path CSS rendering
     // https://github.com/kriasoft/isomorphic-style-loader
     const insertCss = (...styles: any[]) => {
-      // eslint-disable-next-line no-underscore-dangle
       styles.forEach(style => css.add(style._getCss()));
     };
 
-    const apolloClient = createApolloClient(
-      {
+    const apolloClient = createApolloClient({
+      schemaArgs: {
         schema: makeExecutableSchema(schema),
         // This is a context consumed in GraphQL Resolvers
         context: { req },
       },
-      {
+      partialCacheDefaults: {
         user: req.user || null,
       },
-    );
+      apolloCache: createCache(),
+      clientDefaults,
+      clientResolvers,
+      clientTypeDefs,
+    });
 
     // Global (context) variables that can be easily accessed from any React component
     // https://facebook.github.io/react/docs/context.html
@@ -218,7 +229,7 @@ app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
       app={{}}
       title="Internal Server Error"
       description={err.message}
-      styles={[{ id: 'css', cssText: errorPageStyle._getCss() }]} // eslint-disable-line no-underscore-dangle
+      styles={[{ id: 'css', cssText: errorPageStyle._getCss() }]}
     >
       {ReactDOM.renderToString(<ErrorPageWithoutStyle error={err} />)}
     </Html>,
@@ -230,13 +241,13 @@ app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
 //
 // Launch the server
 // -----------------------------------------------------------------------------
-const promise = models.sync().catch((err: Error) => console.error(err.stack));
+// const promise = models.sync().catch((err: Error) => console.error(err.stack));
 if (!module.hot) {
-  promise.then(() => {
-    app.listen(config.port, () => {
-      console.info(`The server is running at http://localhost:${config.port}/`);
-    });
+  // promise.then(() => {
+  app.listen(config.port, () => {
+    console.info(`The server is running at http://localhost:${config.port}/`);
   });
+  // });
 }
 
 //
