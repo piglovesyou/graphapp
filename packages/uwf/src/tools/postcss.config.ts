@@ -9,9 +9,9 @@
 
 /* eslint-disable global-require */
 
-const isDebug = !process.argv.includes('--release');
-const pkg = require('../package.json');
+import pkg from "../../package.json";
 
+const isDebug = !process.argv.includes('--release');
 const config = {
   // The list of plugins for PostCSS
   // https://github.com/postcss/postcss
