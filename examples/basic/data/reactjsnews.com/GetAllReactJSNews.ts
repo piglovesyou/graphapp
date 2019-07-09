@@ -1,9 +1,7 @@
 import fetch from 'node-fetch';
 import { ReactJsNewsItem } from '../../../../__generated__/dataBinders';
 
-export const schema = [
-  `
-  # A single news article from [https://reactjsnews.com/](https://reactjsnews.com/)
+export const schema = `
   type ReactJSNewsItem {
     # The news item's title
     title: String!
@@ -20,15 +18,11 @@ export const schema = [
     # News article in HTML format
     content: String!
   }
-`,
-];
-
-export const queries = [
-  `
-  # Retrieves the latest ReactJS News
-  reactjsGetAllNews: [ReactJSNewsItem!]!
-`,
-];
+  
+  extend type Query {
+    reactjsGetAllNews: [ReactJSNewsItem!]!
+  }
+`;
 
 // React.js News Feed (RSS)
 const url =
