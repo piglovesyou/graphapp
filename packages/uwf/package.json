@@ -15,7 +15,8 @@
     "uwf": "bin/uwf"
   },
   "dependencies": {
-    "@piglovesyou/isomorphic-style-loader": "^4.1.1",
+    "@piglovesyou/isomorphic-style-loader": "^4.2.0",
+    "@piglovesyou/enhanced-resolve": "^4.3.0",
     "@graphql-codegen/cli": "~1.2.0",
     "@graphql-codegen/typescript-operations": "^1.2.1",
     "@graphql-codegen/typescript-react-apollo": "^1.2.1",
@@ -49,7 +50,6 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.4.0",
-    "@piglovesyou/enhanced-resolve": "^4.3.0",
     "rimraf": "^2.6.3",
     "copyfiles": "^2.1.0"
   },
