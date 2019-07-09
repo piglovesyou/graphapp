@@ -8,7 +8,7 @@
  */
 
 import React, { ReactNode } from 'react';
-import history from '../../history';
+import history from 'uwf/history';
 
 function isLeftClickEvent(event: MouseEvent) {
   return event.button === 0;

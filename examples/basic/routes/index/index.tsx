@@ -1,6 +1,6 @@
 import useStyles from 'uwf/useStyles';
 import React from 'react';
-import { withHomeNews } from '../../__generated__/dataBinders';
+import { withHomeNews } from 'uwf/dataBinders';
 import Layout from '../../components/Layout';
 import s from './home.css';
 
