@@ -1,28 +1,26 @@
-/**
- * React Starter Kit (https://www.reactstarterkit.com/)
- *
- * Copyright © 2014-present Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
+import useStyles from 'uwf/useStyles';
 import React from 'react';
 import Layout from '../../components/Layout';
-import Register from './Register';
+import s from './Register.css';
 
-const title = 'New User Registration';
+type PropTypes = {
+  title: string;
+};
 
-function action() {
-  return {
-    chunks: ['register'],
-    title,
-    component: (
-      <Layout>
-        <Register title={title} />
-      </Layout>
-    ),
-  };
-}
+export const title = 'New User Registration';
 
-export default action;
+const Register = (props: PropTypes) => {
+  useStyles(s);
+  return (
+    <Layout>
+      <div className={ s.root }>
+        <div className={ s.container }>
+          <h1>{ props.title }</h1>
+          <p>...</p>
+        </div>
+      </div>
+    </Layout>
+  );
+};
+
+export default Register;

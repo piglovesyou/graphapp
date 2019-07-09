@@ -9,7 +9,7 @@
 
 import React, { ComponentType } from 'react';
 import cx from 'classnames';
-import useStyles from 'isomorphic-style-loader/useStyles';
+import useStyles from 'uwf/useStyles';
 import s from './Navigation.css';
 import Link from '../Link';
 

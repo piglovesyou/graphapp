@@ -1,33 +1,24 @@
-/**
- * React Starter Kit (https://www.reactstarterkit.com/)
- *
- * Copyright © 2014-present Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
+import useStyles from 'uwf/useStyles';
 import React from 'react';
 import Layout from '../../components/Layout';
-import Admin from './Admin';
+import s from './Admin.css';
 
-const title = 'Admin Page';
-const isAdmin = false;
+type PropTypes = {};
 
-function action() {
-  if (!isAdmin) {
-    return { redirect: '/login' };
-  }
+export const title = 'Admin Page';
 
-  return {
-    chunks: ['admin'],
-    title,
-    component: (
-      <Layout>
-        <Admin title={title} />
-      </Layout>
-    ),
-  };
-}
+const Admin = (_props: PropTypes) => {
+  useStyles(s);
+  return (
+    <Layout>
+      <div className={ s.root }>
+        <div className={ s.container }>
+          <h1>{ title }</h1>
+          <p>...</p>
+        </div>
+      </div>
+    </Layout>
+  );
+};
 
-export default action;
+export default Admin;

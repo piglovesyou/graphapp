@@ -8,7 +8,7 @@
  */
 
 import React from 'react';
-import useStyles from 'isomorphic-style-loader/useStyles';
+import useStyles from 'uwf/useStyles';
 import s from './Header.css';
 import Link from '../Link';
 import Navigation from '../Navigation';

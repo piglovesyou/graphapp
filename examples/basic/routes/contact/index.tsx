@@ -1,28 +1,26 @@
-/**
- * React Starter Kit (https://www.reactstarterkit.com/)
- *
- * Copyright © 2014-present Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
+import useStyles from 'uwf/useStyles';
 import React from 'react';
 import Layout from '../../components/Layout';
-import Contact from './Contact';
+import s from './Contact.css';
 
-const title = 'Contact Us';
+type PropTypes = {
+  title: string;
+};
 
-function action() {
-  return {
-    chunks: ['contact'],
-    title,
-    component: (
-      <Layout>
-        <Contact title={title} />
-      </Layout>
-    ),
-  };
-}
+export const title = 'Contact Us';
 
-export default action;
+const Contact = (props: PropTypes) => {
+  useStyles(s);
+  return (
+    <Layout>
+      <div className={ s.root }>
+        <div className={ s.container }>
+          <h1>{ props.title }</h1>
+          <p>...</p>
+        </div>
+      </div>
+    </Layout>
+  );
+};
+
+export default Contact;
