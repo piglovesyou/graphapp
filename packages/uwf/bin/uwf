@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+
+// eslint-disable global-require
+
+const {resolve} = require('path');
+let srcDir = resolve(__dirname, '../dist');
+const isDevelop = process.argv.includes('--develop') || process.env.NODE_ENV === 'develop';
+
+if (isDevelop) {
+  require('@babel/register')({
+    cwd: __dirname,
+    extensions: ['.ts'],
+    ...require('../babel.config'),
+  });
+
+  srcDir = resolve(__dirname, '../src');
+}
+
+const run = require(resolve(srcDir, 'tools/run')).default;
+const task = require(resolve(srcDir, 'tools', process.argv[2])).default;
+
+run(task).catch(err => {
+  console.error(err.stack);
+  process.exit(1);
+});
+
