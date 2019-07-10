@@ -9,7 +9,7 @@
 
 /* eslint-disable global-require */
 
-import pkg from "../../package.json";
+import pkg from '../../package.json';
 
 const isDebug = !process.argv.includes('--release');
 const config = {

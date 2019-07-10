@@ -23,11 +23,12 @@ module.exports = {
 
   parserOptions: {
     sourceType: 'module',
-    project: './tsconfig.json',
+    // project: './tsconfig.json',
   },
 
   globals: {
     __DEV__: true,
+    __userDir__: true,
   },
 
   env: {
@@ -37,7 +38,10 @@ module.exports = {
   rules: {
     // Forbid the use of extraneous packages
     // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-extraneous-dependencies.md
-    'import/no-extraneous-dependencies': ['error', { packageDir: '.' }],
+    // 'import/no-extraneous-dependencies': ['error', { packageDir: '.' }],
+    'import/no-extraneous-dependencies': 'off',
+    'import/prefer-default-export': 'off',
+    'import/no-dynamic-require': 'off',
 
     // Recommend not to leave any console.log in your code
     // Use console.error, console.warn and console.info instead
@@ -54,7 +58,7 @@ module.exports = {
     'no-underscore-dangle': [
       'error',
       {
-        allow: ['__typename', '__DEV__'],
+        allow: ['__typename', '__DEV__', '__userDir__'],
       },
     ],
 

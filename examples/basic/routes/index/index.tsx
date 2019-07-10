@@ -1,3 +1,5 @@
+/* eslint-disable react/no-danger */
+
 import useStyles from 'uwf/useStyles';
 import React from 'react';
 import { withHomeNews } from 'uwf/dataBinders';
@@ -19,26 +21,25 @@ const Home = withHomeNews<Props>()(props => {
 
   return (
     <Layout>
-      <div className={ s.root }>
-        <div className={ s.container }>
-          <p className={ s.networkStatusMessage }>
-            { isConnected ? 'Online' : 'Offline' }
+      <div className={s.root}>
+        <div className={s.container}>
+          <p className={s.networkStatusMessage}>
+            {isConnected ? 'Online' : 'Offline'}
           </p>
           <h1>React.js News</h1>
-          { loading || !reactjsGetAllNews
+          {loading || !reactjsGetAllNews
             ? 'Loading...'
             : reactjsGetAllNews.map(item => (
-              <article key={ item.link } className={ s.newsItem }>
-                <h1 className={ s.newsTitle }>
-                  <a href={ item.link }>{ item.title }</a>
-                </h1>
-                <div
-                  className={ s.newsDesc }
-                  // eslint-disable-next-line react/no-danger
-                  dangerouslySetInnerHTML={ { __html: item.content } }
-                />
-              </article>
-            )) }
+                <article key={item.link} className={s.newsItem}>
+                  <h1 className={s.newsTitle}>
+                    <a href={item.link}>{item.title}</a>
+                  </h1>
+                  <div
+                    className={s.newsDesc}
+                    dangerouslySetInnerHTML={{ __html: item.content }}
+                  />
+                </article>
+              ))}
         </div>
       </div>
     </Layout>

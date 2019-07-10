@@ -9,11 +9,11 @@
     "normalize.css": "^8.0.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "uwf": "file:../../packages/uwf"
+    "uwf": "*"
   },
   "scripts": {
-    "start": "uwf start",
-    "build": "uwf build",
-    "codegen": "uwf codegen"
+    "start": "INIT_CWD=`pwd` uwf start",
+    "build": "INIT_CWD=`pwd` uwf build --release",
+    "codegen": "INIT_CWD=`pwd` uwf codegen"
   }
 }
