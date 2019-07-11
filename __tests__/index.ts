@@ -1,9 +1,28 @@
-import assert from 'assert';
+import execa from 'execa';
+import path from 'path';
+import waitOn from 'wait-on';
 
-describe('Array', () => {
-  describe('#indexOf()', () => {
-    it('should return -1 when the value is not present', () => {
-      assert.strictEqual([1, 2, 3].indexOf(4), -1);
-    });
+const timeout = 100 * 1000;
+const waitApp = () =>
+  waitOn({
+    resources: ['http://localhost:3000'],
+    timeout,
   });
+const startApp = (cwd: string) =>
+  execa('yarn', ['start', '--silent'], {
+    cwd,
+    stdio: 'ignore',
+  });
+
+describe('examples/basic', () => {
+  it(
+    'starts correctly',
+    async () => {
+      const cwd = path.resolve(__dirname, '../examples/basic');
+      const app = startApp(cwd);
+      await waitApp();
+      app.kill('SIGKILL');
+    },
+    timeout * 2,
+  );
 });
