@@ -8,9 +8,8 @@ const isDevelop = process.argv.includes('--develop') || process.env.NODE_ENV ===
 
 if (isDevelop) {
   require('@babel/register')({
-    cwd: __dirname,
     extensions: ['.ts'],
-    ...require('../babel.config'),
+    ...require('../../../babel.config.js'),
   });
 
   srcDir = resolve(__dirname, '../src');

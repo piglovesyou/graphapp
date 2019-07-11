@@ -33,14 +33,14 @@ module.exports = {
   // collectCoverage: false, // [boolean]
 
   // https://facebook.github.io/jest/docs/en/configuration.html#collectcoveragefrom-array
-  collectCoverageFrom: [
-    'src/**/*.{ts,tsx,js,jsx}',
-    '!**/node_modules/**',
-    '!**/vendor/**',
-  ],
+  // collectCoverageFrom: [
+  //   'src/**/*.{ts,tsx,js,jsx}',
+  //   '!**/node_modules/**',
+  //   '!**/vendor/**',
+  // ],
 
   // https://facebook.github.io/jest/docs/en/configuration.html#coveragedirectory-string
-  coverageDirectory: '<rootDir>/coverage', // [string]
+  // coverageDirectory: '<rootDir>/coverage', // [string]
 
   // coveragePathIgnorePatterns: // [array<string>]
   // coverageReporters: [], // [array<string>]
@@ -91,9 +91,6 @@ module.exports = {
 
   transform: {
     '\\.(ts|tsx|js|jsx)$': 'babel-jest',
-    '\\.(gql|graphql)$': 'jest-transform-graphql',
-    '^(?!.*\\.(js|jsx|json|css|less|styl|scss|sass|sss)$)':
-      '<rootDir>/tools/lib/fileTransformer.js',
   },
 
   // transformIgnorePatterns: // [array<string>]

@@ -54,6 +54,6 @@
     "copyfiles": "^2.1.0"
   },
   "scripts": {
-    "prepack": "rimraf dist && copyfiles -u 1 src/**/*.css dist && babel --extensions '.ts,.tsx,.js' -d dist src"
+    "prepack": "rimraf dist && copyfiles -u 1 src/**/*.css dist && babel --config-file ../../babel.config --extensions '.ts,.tsx,.js' -d dist src"
   }
 }
