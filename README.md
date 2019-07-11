@@ -2,17 +2,17 @@
 
 _uwf_ is a GraphQL and React based web framework.
 
-## Concepts
+## Concept
 
 GraphQL is what conciliates troubles between UI and data, including one from database, external RESTful API and even client-side state. _uwf_ boosts up developers to get the benefits through a Next.js-like entrypoint.
 
-#### Built-in supported features:
+#### Features:
 
 - Auto wiring-up for routes and GraphQL schema/resolvers
 - Server Side Rendering
 - Bundling optimised production build
 
-#### Built-in technology stacks:
+#### Bound technology stack:
 
 - All the Apollo toolset
 - Webpack for development and production build
@@ -53,6 +53,24 @@ $ yarn uwf build
 $ cd build
 $ node server.js
 ```
+
+## API
+
+#### `./routes`
+
+Directories and file names of `./routes/**/*.tsx` are interpreted as page routes.
+
+#### `./data/*.graphql`
+
+GraphQL Schema.
+
+#### `./data/{Query,Mutation,Subscription,OTHER_TYPES}/*.ts`
+
+Field resolvers for GraphQL Types. 
+
+#### `./state/**`
+
+Local state. Directories/files structure rules are same as ./data .
 
 ## License
 
