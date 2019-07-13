@@ -1,8 +1,9 @@
 import { createContext } from 'react';
+import { ParsedQuery } from 'query-string';
 
 export type AppContextTypes = {
   pathname: string;
-  query?: { [s: string]: string | string[] };
+  query?: ParsedQuery<string>;
   params?: { [s: string]: string };
 };
 
