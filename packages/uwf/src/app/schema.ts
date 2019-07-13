@@ -68,5 +68,5 @@ export default {
   typeDefs: (schema as any) as DocumentNode[],
   resolvers,
   parseOptions: { allowLegacySDLEmptyFields: true },
-  // ...(__DEV__ ? { log: e => console.error(e.stack) } : {}),
+  ...(__DEV__ ? { log: (e: any) => console.error(e.stack) } : {}),
 };
