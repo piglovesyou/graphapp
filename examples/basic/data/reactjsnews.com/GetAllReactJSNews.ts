@@ -1,5 +1,6 @@
 import fetch from 'node-fetch';
 import { ReactJsNewsItem } from 'uwf/dataBinders';
+import { IResolvers } from 'uwf/types';
 
 export const schema = `
   type ReactJSNewsItem {
@@ -21,6 +22,7 @@ export const schema = `
   
   extend type Query {
     reactjsGetAllNews: [ReactJSNewsItem!]!
+    reactjsGetNews(link: String!): ReactJSNewsItem
   }
 `;
 
@@ -29,42 +31,36 @@ const url =
   'https://api.rss2json.com/v1/api.json' +
   '?rss_url=https%3A%2F%2Freactjsnews.com%2Ffeed.xml';
 
-let items: ReactJsNewsItem[] = [];
-let lastFetchTask: Promise<ReactJsNewsItem[]> | null;
-let lastFetchTime = Number(new Date(1970, 0, 1));
-
-export const resolvers = {
-  Query: {
-    reactjsGetAllNews() {
-      if (lastFetchTask) {
-        return lastFetchTask;
-      }
-
-      if (Date.now() - lastFetchTime > 1000 * 60 * 10 /* 10 mins */) {
-        lastFetchTime = Date.now();
-        lastFetchTask = fetch(url)
-          .then(response => response.json())
-          .then(data => {
-            if (data.status === 'ok') {
-              items = data.items;
-            }
-
-            lastFetchTask = null;
-            return items;
-          })
-          .catch(err => {
-            lastFetchTask = null;
-            throw err;
-          });
-
-        if (items.length) {
+const getNews = (() => {
+  let items: ReactJsNewsItem[] | null = null;
+  return (): Promise<ReactJsNewsItem[]> => {
+    if (items) return Promise.resolve(items);
+    return fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'ok') {
+          items = data.items as ReactJsNewsItem[];
+          // Clear cache after a moment
+          setTimeout(() => {
+            items = null;
+          }, 60 * 1000);
           return items;
         }
+        throw new Error('Cannot fetch React News');
+      });
+  };
+})();
 
-        return lastFetchTask;
-      }
-
-      return items;
+export const resolvers: IResolvers = {
+  Query: {
+    reactjsGetAllNews() {
+      return getNews();
+    },
+    async reactjsGetNews(_parent, { link }) {
+      const items = await getNews();
+      const item = items.find((i: any) => i.link === link);
+      if (item) return item;
+      throw new Error(`React News of link "${link}" was not found`);
     },
   },
 };

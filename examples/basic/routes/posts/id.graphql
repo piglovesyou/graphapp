@@ -1,0 +1,7 @@
+query News($link: String!) {
+  reactjsGetNews(link: $link) {
+    title
+    link
+    content
+  }
+}
