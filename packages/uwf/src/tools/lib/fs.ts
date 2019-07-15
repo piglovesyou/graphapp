@@ -3,6 +3,7 @@ import path from 'path';
 import glob, { IOptions } from 'glob';
 import mkdirp from 'mkdirp';
 import rimraf from 'rimraf';
+import copyfiles from 'copyfiles';
 
 export const readFile = (file: string) =>
   new Promise((resolve, reject) => {
@@ -45,6 +46,19 @@ export const copyFile = (source: string, target: string) =>
     wr.on('close', () => done());
     rd.pipe(wr);
   });
+
+export const copyFiles = (
+  pattern: string,
+  target: string,
+  opts: copyfiles.Options = {},
+) => {
+  return new Promise((resolve, reject) => {
+    copyfiles([pattern, target], opts, err => {
+      if (err) return reject(err);
+      return resolve();
+    });
+  });
+};
 
 export const readDir = (
   pattern: string,

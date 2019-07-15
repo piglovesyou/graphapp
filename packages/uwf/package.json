@@ -18,7 +18,8 @@
     "package.json",
     "yarn.lock",
     "bin",
-    "dist"
+    "dist",
+    "examples"
   ],
   "dependencies": {
     "@babel/core": "^7.4.5",
@@ -100,19 +101,19 @@
     "webpack-bundle-analyzer": "^3.3.2",
     "webpack-dev-middleware": "^3.7.0",
     "webpack-hot-middleware": "^2.25.0",
+    "copyfiles": "^2.1.0",
     "webpack-node-externals": "^1.7.2",
+    "rimraf": "^2.6.3",
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.4.0",
-    "copyfiles": "^2.1.0",
-    "rimraf": "^2.6.3"
+    "@babel/cli": "^7.4.0"
   },
   "peerDependencies": {
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   },
   "scripts": {
-    "prepack": "rimraf dist && copyfiles -u 1 src/**/*.css dist && babel --config-file ../../babel.config --extensions '.ts,.tsx,.js' -d dist src"
+    "prepack": "rimraf dist && copyfiles -u 1 src/**/*.css dist && copyfiles -u 4 '../../examples/basic/{components,data,public,routes,state,.gitignore}'/** examples/basic && babel --config-file ../../babel.config --extensions '.ts,.tsx,.js' -d dist src"
   }
 }
