@@ -9,7 +9,19 @@
 
   <name>
 
-# TECHNOLOGY COLOPHON
+# Features:
+  Auto wiring-up for routes and GraphQL schema/resolvers
+  Server Side Rendering
+  Bundling optimised production build
 
-  CSS3, HTML5, JavaScript
-  React Starter Kit -- https://reactstarter.com/
+# Bound technology stack:
+  All the Apollo toolset
+  Webpack for development and production build
+  TypeScript
+  React
+  Passport for authentication
+
+# Heavily inspired by:
+  Apollo for its GraphQL perspective
+  Next.js for its webpack magic and File System based routing
+  React Starter Kit for its decent modern boilerplate defaults
