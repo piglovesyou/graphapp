@@ -36,6 +36,12 @@ const staticAssetName = isDebug
   ? '[path][name].[ext]?[hash:8]'
   : '[hash:8].[ext]';
 
+const nodeModuleDirs = [
+  path.join(userDir, 'node_modules'),
+  path.join(libDir, 'node_modules'),
+  ...(isDebug ? [path.join(libDir, '../../node_modules')] : []),
+];
+
 //
 // Common configuration chunk to be used for both
 // client-side (client.js) and server-side (server.js) bundles
@@ -293,12 +299,7 @@ const config: WebpackOptions = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.json'],
     mainFields: ['main', 'module'],
-    modules: [
-      path.join(libDir, 'node_modules'),
-      // TODO: should be erased
-      path.join(userDir, 'node_modules'),
-      'node_modules',
-    ],
+    modules: nodeModuleDirs,
     plugins: [
       new MultiAliasPlugin(
         'described-resolve',
@@ -524,10 +525,12 @@ const serverConfig: WebpackOptions = {
   externals: [
     './chunk-manifest.json',
     './asset-manifest.json',
-    nodeExternals({
-      whitelist: [reStyle, reImage, /^uwf\/?/],
-      modulesDir: path.join(libDir, '../../node_modules'),
-    }),
+    ...nodeModuleDirs.map(nodeModuleDir =>
+      nodeExternals({
+        whitelist: [reStyle, reImage, /^uwf\/.+$/],
+        modulesDir: nodeModuleDir,
+      }),
+    ),
   ],
 
   plugins: [
