@@ -50,10 +50,11 @@ function createFileInfo(fileName: string): ModuleInfo {
 
 export default async function generateDeps(
   globPattern: string,
+  ignorePattern: string,
   fileBaseNameToGenerate: string,
   moduleType: string,
 ) {
-  const fileNames = await getFileNames(globPattern);
+  const fileNames = await getFileNames(globPattern, ignorePattern);
 
   const scriptContent = buildBindSchemaScript(
     fileNames.map(createFileInfo),

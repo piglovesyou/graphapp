@@ -1,5 +1,6 @@
 declare namespace uwf {
   import { ComponentType } from 'react';
+  import { IFieldResolver } from 'graphql-tools';
 
   export type SchemaDepsBase = {
     schema?: string;
@@ -15,6 +16,8 @@ declare namespace uwf {
   export type SchemaInfo = ModuleInfo<SchemaDepsBase>;
 
   export type ClientSchemaInfo = ModuleInfo<ClientSchemaDeps>;
+
+  export type ResolverDeps = ModuleInfo<{ default: IFieldResolver }>;
 
   export type GraphqlDeps = ModuleInfo<{ default: string }>;
 

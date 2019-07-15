@@ -8,58 +8,42 @@
  */
 
 import { DocumentNode } from 'graphql';
-import gql from 'graphql-tag';
 import merge from 'lodash.merge';
 
-import serverSchemaDeps from '../../__generated__/serverSchemaDeps';
+import serverResolverDeps from '../../__generated__/serverResolverDeps';
 import serverGraphqlDeps from '../../__generated__/serverGraphqlDeps';
-import clientSchemaDeps from '../../__generated__/clientSchemaDeps';
+import clientResolverDeps from '../../__generated__/clientResolverDeps';
 import clientGraphqlDeps from '../../__generated__/clientGraphqlDeps';
 
-const hasObjectTypeExtension = (typeDefs: DocumentNode, type: string) =>
-  typeDefs.definitions.some(def =>
-    Boolean(def.kind === 'ObjectTypeExtension' && def.name.value === type),
-  );
+const buildResolver = (rootDir: string, resolverDeps: uwf.ResolverDeps[]) => {
+  return resolverDeps.reduce((acc, [{ default: fn }, path]) => {
+    const [target, type, name] = path.split('/');
+    if (target !== rootDir) throw new Error('never');
+    if (!name.endsWith('.ts')) throw new Error('never');
+    return merge({}, acc, { [type]: fn });
+  }, {});
+};
 
-const [hasMutation, hasSubscription] = [
-  ...serverSchemaDeps,
-  ...clientSchemaDeps,
-].reduce(
-  ([maybeHasMutation, maybeHasSubscription], [module]) => {
-    if (!module.schema) return [maybeHasMutation, maybeHasSubscription];
-    return [
-      maybeHasMutation ||
-        hasObjectTypeExtension(gql(module.schema), 'Mutation'),
-      maybeHasSubscription ||
-        hasObjectTypeExtension(gql(module.schema), 'Subscription'),
-    ];
-  },
-  [false, false],
+const resolvers = merge(
+  {},
+  buildResolver('data', serverResolverDeps),
+  buildResolver('state', clientResolverDeps),
 );
 
 const SchemaDefinition = `
   type Query { }
-  ${hasMutation ? 'type Mutation { }' : ''}
-  ${hasSubscription ? 'type Subscription { }' : ''}
-  
+  ${'Mutation' in resolvers ? 'type Mutation { }' : ''}
+  ${'Subscription' in resolvers ? 'type Subscription { }' : ''}
+
   schema {
     query: Query
-    ${hasMutation ? 'mutation: Mutation' : ''}
-    ${hasSubscription ? 'subscription: Subscription' : ''}
+    ${'Mutation' in resolvers ? 'mutation: Mutation' : ''}
+    ${'Subscription' in resolvers ? 'subscription: Subscription' : ''}
   }
 `;
 
-// @ts-ignore
-const resolvers = merge(
-  {},
-  ...serverSchemaDeps.map(([module]) => module.resolvers).filter(Boolean),
-  ...clientSchemaDeps.map(([module]) => module.resolvers).filter(Boolean),
-);
-
 const schema = [
   SchemaDefinition,
-  ...serverSchemaDeps.map(([module]) => module.schema).filter(Boolean),
-  ...clientSchemaDeps.map(([module]) => module.schema).filter(Boolean),
   ...serverGraphqlDeps.map(([module]) => module.default),
   ...clientGraphqlDeps.map(([module]) => module.default),
 ];

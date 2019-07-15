@@ -5,19 +5,39 @@ import generateDeps from './generateDeps';
 
 export default async function prepareDeps() {
   await makeDir(genDir);
-  await generateDeps('data/**/*.ts', 'serverSchemaDeps', 'uwf.SchemaInfo');
   await generateDeps(
-    'data/**/*.graphql',
+    'data/rootValue.ts',
+    '',
+    'serverRootValueDeps',
+    'uwf.ResolverDeps',
+  );
+  await generateDeps(
+    'data/*/*.ts',
+    '',
+    'serverResolverDeps',
+    'uwf.ResolverDeps',
+  );
+  await generateDeps(
+    'data/*.graphql',
+    '',
     'serverGraphqlDeps',
     'uwf.GraphqlDeps',
   );
   await generateDeps(
-    'state/**/*.ts',
-    'clientSchemaDeps',
-    'uwf.ClientSchemaInfo',
+    'state/rootValue.ts',
+    '',
+    'clientRootValueDeps',
+    'uwf.ResolverDeps',
   );
   await generateDeps(
-    'state/**/*.graphql',
+    'state/*/*.ts',
+    '',
+    'clientResolverDeps',
+    'uwf.ResolverDeps',
+  );
+  await generateDeps(
+    'state/*.graphql',
+    '',
     'clientGraphqlDeps',
     'uwf.GraphqlDeps',
   );
