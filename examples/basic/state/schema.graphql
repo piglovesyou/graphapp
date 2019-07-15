@@ -1,0 +1,17 @@
+type NetworkStatus {
+  isConnected: Boolean!
+}
+
+type User {
+  id: String!
+}
+
+extend type Query {
+  networkStatus: NetworkStatus!
+
+  user: User
+}
+
+extend type Mutation {
+  updateNetworkStatus(isConnected: Boolean): NetworkStatus!
+}

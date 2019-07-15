@@ -1,0 +1,21 @@
+type ReactJSNewsItem {
+  # The news item's title
+  title: String!
+
+  # A direct link URL to this news item on reactjsnews.com
+  link: String!
+
+  # The name of the news item's author
+  author: String!
+
+  # The date this news item was published
+  pubDate: String!
+
+  # News article in HTML format
+  content: String!
+}
+
+extend type Query {
+  reactjsGetAllNews: [ReactJSNewsItem!]!
+  reactjsGetNews(link: String!): ReactJSNewsItem
+}
