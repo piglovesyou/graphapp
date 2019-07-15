@@ -1,8 +1,7 @@
 import path from 'path';
 import createMD5Hash from './createMD5Hash';
 import { genDir, userDir } from './dirs';
-import getFileNames from './getFileNames';
-import { writeFile } from './fs';
+import { readDir, writeFile } from './fs';
 
 type ModuleInfo = {
   modulePath: string;
@@ -50,11 +49,10 @@ function createFileInfo(fileName: string): ModuleInfo {
 
 export default async function generateDeps(
   globPattern: string,
-  ignorePattern: string,
   fileBaseNameToGenerate: string,
   moduleType: string,
 ) {
-  const fileNames = await getFileNames(globPattern, ignorePattern);
+  const fileNames = await readDir(globPattern);
 
   const scriptContent = buildBindSchemaScript(
     fileNames.map(createFileInfo),

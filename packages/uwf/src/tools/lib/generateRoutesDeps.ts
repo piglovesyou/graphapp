@@ -1,7 +1,6 @@
 import path from 'path';
 import { genDir, userDir } from './dirs';
-import { writeFile } from './fs';
-import getFileNames from './getFileNames';
+import { readDir, writeFile } from './fs';
 
 type PathInfo = {
   routePath: string;
@@ -71,7 +70,7 @@ const createpathInfo = (f: string): PathInfo => {
 };
 
 export default async function generateRoutesDeps() {
-  const files = await getFileNames('routes/**/*.tsx', '');
+  const files = await readDir('routes/**/*.tsx');
   const pathInfoArray = files.map(createpathInfo);
   const scriptContent = buildRoutesScript(pathInfoArray);
   await writeFile(path.resolve(genDir, 'routesDeps.ts'), scriptContent);

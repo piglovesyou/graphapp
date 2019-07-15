@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import glob, { IOptions } from 'glob';
+import glob from 'fast-glob';
 import mkdirp from 'mkdirp';
 import rimraf from 'rimraf';
 import copyfiles from 'copyfiles';
@@ -61,14 +61,10 @@ export const copyFiles = (
 };
 
 export const readDir = (
-  pattern: string,
-  options: IOptions = {},
+  pattern: string | string[],
+  options: glob.Options = {},
 ): Promise<string[]> => {
-  return new Promise((resolve, reject) =>
-    glob(pattern, options, (err, result) =>
-      err ? reject(err) : resolve(result),
-    ),
-  );
+  return glob(pattern, options);
 };
 
 export const makeDir = (name: string) =>
@@ -79,7 +75,6 @@ export const makeDir = (name: string) =>
 export const moveDir = async (source: string, target: string) => {
   const dirs = await readDir('**/*.*', {
     cwd: source,
-    nosort: true,
     dot: true,
   });
   await Promise.all(
@@ -95,7 +90,6 @@ export const moveDir = async (source: string, target: string) => {
 export const copyDir = async (source: string, target: string) => {
   const dirs = await readDir('**/*.*', {
     cwd: source,
-    nosort: true,
     dot: true,
   });
   await Promise.all(
@@ -108,7 +102,7 @@ export const copyDir = async (source: string, target: string) => {
   );
 };
 
-export const cleanDir = (pattern: string, options?: IOptions) =>
+export const cleanDir = (pattern: string, options?: any) =>
   new Promise((resolve, reject) =>
     rimraf(pattern, { glob: options }, err => (err ? reject(err) : resolve())),
   );
