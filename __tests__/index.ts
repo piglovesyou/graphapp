@@ -12,7 +12,7 @@ const verifyApp = () =>
   });
 
 const startApp = (cwd: string) =>
-  execa('yarn', ['start', '--silent'], {
+  execa('npm', ['start', '--silent'], {
     cwd,
     stdio: 'ignore',
   });
@@ -29,7 +29,7 @@ describe('uwf', () => {
     timeout * 2,
   );
 
-  it.skip(
+  it(
     'initialize starts from scratch correctly',
     async () => {
       const libDir = path.join(__dirname, '../packages/uwf');
@@ -41,17 +41,18 @@ describe('uwf', () => {
 
       // Pack uwf
       await execa(
-        'yarn',
+        'npm',
         ['pack', '--filename', path.join(userDir, 'uwf-packed.tgz')],
         { cwd: libDir },
       );
 
       // Init proj
-      await execa('yarn', ['init', '--yes'], { cwd: userDir });
+      await execa('npm', ['init', '--yes'], { cwd: userDir });
       await execa(
-        'yarn',
+        'npm',
         [
-          'add',
+          'install',
+          '--save',
           'react',
           'react-dom',
           'classnames',
@@ -60,8 +61,10 @@ describe('uwf', () => {
         ],
         { cwd: userDir },
       );
-      await execa('yarn', ['add', '-D', packedName], { cwd: userDir });
-      await execa('yarn', ['run', 'uwf', 'init'], { cwd: userDir });
+      await execa('npm', ['install', '--save-dev', packedName], {
+        cwd: userDir,
+      });
+      await execa('npx', ['uwf', 'init'], { cwd: userDir });
 
       // Start app
       const app = startApp(userDir);
