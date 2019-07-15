@@ -14,6 +14,12 @@
   "bin": {
     "uwf": "bin/uwf"
   },
+  "files": [
+    "package.json",
+    "yarn.lock",
+    "bin",
+    "dist"
+  ],
   "dependencies": {
     "@graphql-codegen/cli": "~1.2.0",
     "@graphql-codegen/typescript-operations": "^1.2.1",
