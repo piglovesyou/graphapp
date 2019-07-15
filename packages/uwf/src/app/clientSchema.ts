@@ -1,14 +1,12 @@
 import gql from 'graphql-tag';
-import merge from 'lodash.merge';
-import { Resolvers } from 'apollo-client';
-import schemaDeps from '../../__generated__/clientSchemaDeps';
+import { buildResolver } from 'uwf/utils';
+import graphqlDeps from '../../__generated__/clientGraphqlDeps';
+import clientResolverDeps from '../../__generated__/clientResolverDeps';
+import rootValue from '../../__generated__/clientRootValueDeps';
 
-export const clientTypeDefs = gql(schemaDeps.map(([m]) => m.schema).join('\n'));
-export const clientDefaults = merge.apply(null, [
-  {},
-  ...schemaDeps.map(([m]) => m.defaults).filter(Boolean),
-]);
-export const clientResolvers = merge.apply(null, [
-  {},
-  ...schemaDeps.map(([m]) => m.resolvers).filter(Boolean),
-]) as Resolvers;
+export const clientGraphqlStrs = graphqlDeps.map(
+  ([{ default: gqlStr }]) => gqlStr,
+);
+export const clientTypeDefs = gql(clientGraphqlStrs.join('\n'));
+export const clientDefaults = rootValue[0] ? rootValue[0][0].default : {};
+export const clientResolvers = buildResolver('state', clientResolverDeps);

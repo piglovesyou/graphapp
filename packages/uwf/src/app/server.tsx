@@ -39,6 +39,11 @@ import {
   clientResolvers,
   clientTypeDefs,
 } from './clientSchema';
+import serverRootValueDeps from '../../__generated__/serverRootValueDeps';
+
+const serverRootValue = serverRootValueDeps[0]
+  ? serverRootValueDeps[0][0].default
+  : {};
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason);
@@ -128,6 +133,7 @@ const server = new ApolloServer({
   playground: __DEV__,
   debug: __DEV__,
   context: ({ req }: { req: Request }) => ({ req }),
+  rootValue: serverRootValue,
 });
 server.applyMiddleware({ app });
 

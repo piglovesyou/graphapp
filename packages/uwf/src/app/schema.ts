@@ -9,25 +9,16 @@
 
 import { DocumentNode } from 'graphql';
 import merge from 'lodash.merge';
+import { buildResolver } from './utils';
 
 import serverResolverDeps from '../../__generated__/serverResolverDeps';
 import serverGraphqlDeps from '../../__generated__/serverGraphqlDeps';
-import clientResolverDeps from '../../__generated__/clientResolverDeps';
-import clientGraphqlDeps from '../../__generated__/clientGraphqlDeps';
-
-const buildResolver = (rootDir: string, resolverDeps: uwf.ResolverDeps[]) => {
-  return resolverDeps.reduce((acc, [{ default: fn }, path]) => {
-    const [target, type, name] = path.split('/');
-    if (target !== rootDir) throw new Error('never');
-    if (!name.endsWith('.ts')) throw new Error('never');
-    return merge({}, acc, { [type]: fn });
-  }, {});
-};
+import { clientResolvers, clientGraphqlStrs } from './clientSchema';
 
 const resolvers = merge(
   {},
   buildResolver('data', serverResolverDeps),
-  buildResolver('state', clientResolverDeps),
+  clientResolvers,
 );
 
 const SchemaDefinition = `
@@ -44,8 +35,8 @@ const SchemaDefinition = `
 
 const schema = [
   SchemaDefinition,
-  ...serverGraphqlDeps.map(([module]) => module.default),
-  ...clientGraphqlDeps.map(([module]) => module.default),
+  ...serverGraphqlDeps.map(([{ default: graphqlStr }]) => graphqlStr),
+  ...clientGraphqlStrs,
 ];
 
 export default {
