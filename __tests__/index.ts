@@ -29,7 +29,7 @@ describe('uwf', () => {
     timeout * 2,
   );
 
-  it(
+  it.skip(
     'initialize starts from scratch correctly',
     async () => {
       const libDir = path.join(__dirname, '../packages/uwf');
