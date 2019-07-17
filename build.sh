@@ -2,9 +2,8 @@
 
 set -e
 
-yarn cache clean uwf
-# Yarn leaves cache of tar package
-rm -rf `yarn cache dir`/.tmp
+yarn cache clean
+rm -rf `yarn cache dir`
 
 yarn lerna bootstrap
 yarn lerna run prepack
