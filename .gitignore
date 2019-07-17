@@ -36,3 +36,5 @@ dist
 /packages/uwf/examples
 
 /__tests__/tmpUserDir
+
+uwf-*.tgz
