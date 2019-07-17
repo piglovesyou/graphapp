@@ -30,7 +30,7 @@ const startApp = (cwd: string) =>
 
 async function cleanUwfYarnCache() {
   await execa('yarn', ['cache', 'clean', 'uwf']);
-  let { stdout: cacheDir } = await _execa('yarn', ['cache', 'dir', '--silent']);
+  let { stdout: cacheDir } = await _execa('yarn', ['cache', 'dir']);
   // Dust in prefix...
   cacheDir = cacheDir.slice(cacheDir.indexOf('/'));
   // Even worse yarn fails tar cache...
@@ -48,7 +48,9 @@ describe('Command uwf ', () => {
     },
     timeout * 2,
   );
+});
 
+describe('Command uwf ', () => {
   it(
     '"init" initialize project from scratch correctly',
     async () => {
