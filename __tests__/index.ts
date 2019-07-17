@@ -7,7 +7,7 @@ import assert from 'assert';
 
 const timeout = 100 * 1000;
 
-const execa = (command: string, args: string[], opts: _execa.Options) =>
+const execa = (command: string, args: string[], opts?: _execa.Options) =>
   _execa(command, args, { stdout: process.stdout, ...opts });
 
 const verifyApp = async () => {
@@ -27,6 +27,15 @@ const startApp = (cwd: string) =>
   execa('yarn', ['run', 'uwf', 'start', '--silent'], {
     cwd,
   });
+
+async function cleanUwfYarnCache() {
+  await execa('yarn', ['cache', 'clean', 'uwf']);
+  let { stdout: cacheDir } = await _execa('yarn', ['cache', 'dir', '--silent']);
+  // Dust in prefix...
+  cacheDir = cacheDir.slice(cacheDir.indexOf('/'));
+  // Even worse yarn fails tar cache...
+  await cleanDir(path.join(cacheDir, '.tmp'));
+}
 
 describe('Command uwf ', () => {
   it(
@@ -58,9 +67,7 @@ describe('Command uwf ', () => {
       );
 
       // Clean yarn cache (otherwise the fresh packed tar can't be usable
-      await execa('yarn', ['cache', 'clean', 'uwf'], {});
-      const {stdout: cacheDir} = await execa('yarn', ['cache', 'dir'], {});
-      await cleanDir(path.join(cacheDir, '.tmp'));
+      await cleanUwfYarnCache();
 
       await execa('yarn', ['add', '-D', packedName], {
         cwd: userDir,
