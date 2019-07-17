@@ -28,15 +28,6 @@ const startApp = (cwd: string) =>
     cwd,
   });
 
-async function cleanUwfYarnCache() {
-  await execa('yarn', ['cache', 'clean', 'uwf']);
-  let { stdout: cacheDir } = await _execa('yarn', ['cache', 'dir']);
-  // Dust in prefix...
-  cacheDir = cacheDir.slice(cacheDir.indexOf('/'));
-  // Even worse yarn fails tar cache...
-  await cleanDir(path.join(cacheDir, '.tmp'));
-}
-
 describe('Command uwf ', () => {
   it(
     '"starts" compiles and starts examples/basic correctly',
@@ -67,9 +58,6 @@ describe('Command uwf ', () => {
         ['pack', '--filename', path.join(userDir, 'uwf-packed.tgz')],
         { cwd: libDir },
       );
-
-      // Clean yarn cache (otherwise the fresh packed tar can't be usable
-      await cleanUwfYarnCache();
 
       await execa('yarn', ['add', '-D', packedName], {
         cwd: userDir,
