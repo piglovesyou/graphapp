@@ -28,7 +28,7 @@ const startApp = (cwd: string) =>
     cwd,
   });
 
-describe('Command uwf ', () => {
+describe.skip('Command uwf ', () => {
   it(
     '"starts" compiles and starts examples/basic correctly',
     async () => {
@@ -77,6 +77,10 @@ describe('Command uwf ', () => {
       );
 
       await execa('yarn', ['uwf', 'init', '--verbose'], {
+        cwd: userDir,
+      });
+      console.info('#########################################33');
+      await execa('find', [`${userDir}/node_modules/uwf/dist`], {
         cwd: userDir,
       });
 

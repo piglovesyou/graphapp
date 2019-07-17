@@ -11,6 +11,6 @@ yarn lerna run prepack
 find `pwd`/packages/uwf/dist
 
 yarn lerna run codegen
-yarn lint
+#yarn lint
 yarn test
 yarn lerna run build
