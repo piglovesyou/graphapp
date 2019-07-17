@@ -12,5 +12,5 @@ find `pwd`/packages/uwf/dist
 
 yarn lerna run codegen
 #yarn lint
-yarn test
+yarn jest
 yarn lerna run build

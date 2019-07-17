@@ -91,6 +91,6 @@ describe('Command uwf ', () => {
       // Teardown
       await cleanDir(userDir);
     },
-    timeout * 2,
+    timeout * 200,
   );
 });
