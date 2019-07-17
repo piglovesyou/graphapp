@@ -56,7 +56,12 @@ describe('Command uwf ', () => {
         ['pack', '--filename', path.join(userDir, 'uwf-packed.tgz')],
         { cwd: libDir },
       );
-      // await execa('yarn', ['cache', 'clean', 'uwf'], {});
+
+      // Clean yarn cache (otherwise the fresh packed tar can't be usable
+      await execa('yarn', ['cache', 'clean', 'uwf'], {});
+      const cacheDir = await execa('yarn', ['cache', 'dir'], {});
+      await cleanDir(path.join(cacheDir, '.tmp'));
+
       await execa('yarn', ['add', '-D', packedName], {
         cwd: userDir,
       });
