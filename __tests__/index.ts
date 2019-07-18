@@ -41,8 +41,8 @@ describe('Command uwf ', () => {
   );
 });
 
-describe('Command uwf ', () => {
-  it(
+describe.only('Command uwf ', () => {
+  it.only(
     '"init" initialize project from scratch correctly',
     async () => {
       const libDir = path.join(__dirname, '../packages/uwf');
@@ -77,6 +77,11 @@ describe('Command uwf ', () => {
       );
 
       await execa('yarn', ['uwf', 'init', '--verbose'], {
+        cwd: userDir,
+      });
+
+      console.info('#########################################');
+      await execa('find', [`${userDir}/node_modules/uwf/dist`], {
         cwd: userDir,
       });
 
