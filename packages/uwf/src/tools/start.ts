@@ -239,6 +239,7 @@ async function start() {
       {
         // https://www.browsersync.io/docs/options
         server: { baseDir: '../public' },
+        port: process.env.PORT ? Number(process.env.PORT) : undefined,
         middleware: [server],
         open: process.argv.includes('--silent') ? false : 'local',
         ...(isDebug ? {} : { notify: false, ui: {} }),
