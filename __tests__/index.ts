@@ -13,11 +13,12 @@ const execa = (command: string, args: string[], opts?: _execa.Options) =>
 
 const verifyApp = async (port: number) => {
   const expected = 'React Starter Kit - www.reactstarterkit.com';
+  const url = `http://localhost:${port}`;
   await waitOn({
-    resources: [`http://localhost:${port}`],
+    resources: [url],
     timeout,
   });
-  const text = await fetch('http://localhost:3000').then(r => r.text());
+  const text = await fetch(url).then(r => r.text());
   const match = text.match(/<title.*?>(.+?)</);
   if (!match) throw new Error('Title text does not exist');
   const [_, actual] = match;
