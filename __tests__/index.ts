@@ -89,7 +89,7 @@ describe('Command uwf ', () => {
         { cwd: userDir },
       );
 
-      await execa('yarn', ['uwf', 'init', '--verbose'], {
+      await execa('yarn', ['uwf', 'init'], {
         cwd: userDir,
       });
 
