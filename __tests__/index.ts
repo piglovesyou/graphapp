@@ -5,7 +5,7 @@ import { makeDir, cleanDir } from 'uwf/src/tools/lib/fs';
 import fetch from 'node-fetch';
 import assert from 'assert';
 
-const timeout = 100 * 1000;
+const timeout = 1000 * 1000;
 
 const execa = (command: string, args: string[], opts?: _execa.Options) =>
   _execa(command, args, { stdout: process.stdout, ...opts });
@@ -87,6 +87,6 @@ describe('Command uwf ', () => {
       // Teardown
       await cleanDir(userDir);
     },
-    timeout * 200,
+    timeout * 2,
   );
 });
