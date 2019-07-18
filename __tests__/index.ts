@@ -6,7 +6,7 @@ import fetch from 'node-fetch';
 import assert from 'assert';
 import terminate from 'terminate';
 
-const timeout = 1000 * 1000;
+const timeout = 3 * 60 * 1000;
 
 const execa = (command: string, args: string[], opts?: _execa.Options) =>
   _execa(command, args, { stdout: process.stdout, ...opts });
