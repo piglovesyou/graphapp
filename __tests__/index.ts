@@ -42,7 +42,7 @@ describe('Command uwf ', () => {
   );
 });
 
-describe('Command uwf ', () => {
+describe.only('Command uwf ', () => {
   it(
     '"init" initialize project from scratch correctly',
     async () => {
@@ -87,12 +87,13 @@ describe('Command uwf ', () => {
       });
 
       const app = startApp(userDir);
+      console.log('verifying.................');
       await verifyApp();
       console.log('terminating.................');
       await new Promise((resolve, reject) => {
         terminate(app.pid, (err: any) => (err ? reject(err) : resolve()));
       });
-      console.log('terminated.................');
+      console.log('terminate...............');
 
       // Teardown
       await cleanDir(userDir);
