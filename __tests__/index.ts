@@ -52,9 +52,7 @@ describe('Command uwf ', () => {
     },
     timeout * 2,
   );
-});
 
-describe('Command uwf ', () => {
   it(
     '"init" initialize project from scratch correctly',
     async () => {
@@ -76,19 +74,6 @@ describe('Command uwf ', () => {
         cwd: userDir,
       });
 
-      await execa(
-        'yarn',
-        [
-          'add',
-          'react',
-          'react-dom',
-          'classnames',
-          'node-fetch',
-          'normalize.css',
-        ],
-        { cwd: userDir },
-      );
-
       await execa('yarn', ['uwf', 'init'], {
         cwd: userDir,
       });
@@ -108,6 +93,6 @@ describe('Command uwf ', () => {
       await cleanDir(userDir);
       console.info('cleaned');
     },
-    timeout * 2,
+    timeout * 4,
   );
 });
