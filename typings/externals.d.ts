@@ -23,6 +23,7 @@ declare module '@piglovesyou/isomorphic-style-loader/StyleContext';
 declare module '@piglovesyou/isomorphic-style-loader/useStyles';
 declare module '@piglovesyou/enhanced-resolve/lib/AliasPlugin';
 declare module 'react-deep-force-update';
+declare module 'terminate';
 declare module 'apollo-link-logger';
 declare module 'get-port';
 declare module 'webpack-hot-middleware/client';

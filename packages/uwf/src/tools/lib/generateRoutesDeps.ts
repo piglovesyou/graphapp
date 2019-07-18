@@ -71,6 +71,8 @@ const createpathInfo = (f: string): PathInfo => {
 
 export default async function generateRoutesDeps() {
   const files = await readDir('routes/**/*.tsx');
+  if (files.length === 0)
+    throw new Error('Please put .tsx in ./routes at least one.');
   const pathInfoArray = files.map(createpathInfo);
   const scriptContent = buildRoutesScript(pathInfoArray);
   await writeFile(path.resolve(genDir, 'routesDeps.ts'), scriptContent);

@@ -14,8 +14,9 @@
     "uwf": "^0.0.1-alpha.1"
   },
   "scripts": {
-    "start": "INIT_CWD=`pwd` uwf start",
-    "build": "INIT_CWD=`pwd` uwf build --release",
-    "codegen": "INIT_CWD=`pwd` uwf codegen"
+    "start": "uwf start",
+    "init": "uwf init",
+    "build": "uwf build --release",
+    "codegen": "uwf codegen"
   }
 }

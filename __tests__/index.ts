@@ -1,58 +1,82 @@
-import execa from 'execa';
+import _execa from 'execa';
 import path from 'path';
 import waitOn from 'wait-on';
 import { makeDir, cleanDir } from 'uwf/src/tools/lib/fs';
+import fetch from 'node-fetch';
+import assert from 'assert';
+import terminate from 'terminate';
 
-const timeout = 100 * 1000;
+const timeout = 1000 * 1000;
 
-const verifyApp = () =>
-  waitOn({
+const execa = (command: string, args: string[], opts?: _execa.Options) =>
+  _execa(command, args, { stdout: process.stdout, ...opts });
+
+const verifyApp = async () => {
+  const expected = 'React Starter Kit - www.reactstarterkit.com';
+  await waitOn({
     resources: ['http://localhost:3000'],
     timeout,
   });
+  const text = await fetch('http://localhost:3000').then(r => r.text());
+  const match = text.match(/<title.*?>(.+?)</);
+  if (!match) throw new Error('Title text does not exist');
+  const [_, actual] = match;
+  assert.strictEqual(actual, expected);
+};
 
 const startApp = (cwd: string) =>
-  execa('npm', ['start', '--silent'], {
+  execa('yarn', ['run', 'uwf', 'start', '--silent'], {
     cwd,
-    stdio: 'ignore',
   });
 
-describe('uwf', () => {
+const kill = async (app: _execa.ExecaChildProcess) => {
+  await new Promise((resolve, reject) => {
+    terminate(app.pid, (err?: any) => {
+      if (err) return reject(err);
+      return resolve();
+    });
+  });
+};
+
+describe('Command uwf ', () => {
   it(
-    'compiles and starts examples/basic correctly',
+    '"starts" compiles and starts examples/basic correctly',
     async () => {
       const cwd = path.resolve(__dirname, '../examples/basic');
       const app = startApp(cwd);
       await verifyApp();
-      app.kill('SIGKILL');
+      app.kill();
     },
     timeout * 2,
   );
+});
 
+describe('Command uwf ', () => {
   it(
-    'initialize starts from scratch correctly',
+    '"init" initialize project from scratch correctly',
     async () => {
       const libDir = path.join(__dirname, '../packages/uwf');
-      const userDir = path.join(__dirname, 'tmpUserDir');
+      const userDir = path.join(process.env.HOME!, 'tmpUserDir');
       const packedName = './uwf-packed.tgz';
 
-      // Prepare userDir
+      await cleanDir(userDir);
       await makeDir(userDir);
+      await execa('yarn', ['init', '--yes'], { cwd: userDir });
 
-      // Pack uwf
       await execa(
-        'npm',
-        ['pack', '--filename', path.join(userDir, 'uwf-packed.tgz')],
+        'yarn',
+        ['pack', '--filename', path.join(userDir, packedName)],
         { cwd: libDir },
       );
 
-      // Init proj
-      await execa('npm', ['init', '--yes'], { cwd: userDir });
+      await execa('yarn', ['--force', 'add', '-D', packedName], {
+        cwd: userDir,
+      });
+
       await execa(
-        'npm',
+        'yarn',
         [
-          'install',
-          '--save',
+          'add',
           'react',
           'react-dom',
           'classnames',
@@ -61,18 +85,24 @@ describe('uwf', () => {
         ],
         { cwd: userDir },
       );
-      await execa('npm', ['install', '--save-dev', packedName], {
+
+      await execa('yarn', ['uwf', 'init', '--verbose'], {
         cwd: userDir,
       });
-      await execa('npx', ['uwf', 'init'], { cwd: userDir });
 
-      // Start app
       const app = startApp(userDir);
+      console.info('verifying..');
       await verifyApp();
-      app.kill('SIGKILL');
+      console.info('verified');
+
+      console.info('terminating..');
+      await kill(app);
+      console.info('terminated');
 
       // Teardown
+      console.info('cleaning..');
       await cleanDir(userDir);
+      console.info('cleaned');
     },
     timeout * 2,
   );
