@@ -41,8 +41,8 @@ describe('Command uwf ', () => {
   );
 });
 
-describe.only('Command uwf ', () => {
-  it.only(
+describe('Command uwf ', () => {
+  it(
     '"init" initialize project from scratch correctly',
     async () => {
       const libDir = path.join(__dirname, '../packages/uwf');
@@ -88,6 +88,9 @@ describe.only('Command uwf ', () => {
       const app = startApp(userDir);
       await verifyApp();
       app.kill();
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      app.kill('SIGKILL');
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       // Teardown
       await cleanDir(userDir);
