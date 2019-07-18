@@ -5,7 +5,9 @@
   "repository": "https://github.com/piglovesyou/uwf",
   "author": "piglovesyou <thepiglovesyou@gmail.com>",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "terminate": "^2.1.2"
+  },
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@babel/node": "^7.4.5",

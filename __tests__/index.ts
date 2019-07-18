@@ -4,6 +4,7 @@ import waitOn from 'wait-on';
 import { makeDir, cleanDir } from 'uwf/src/tools/lib/fs';
 import fetch from 'node-fetch';
 import assert from 'assert';
+import terminate from 'terminate';
 
 const timeout = 1000 * 1000;
 
@@ -46,7 +47,7 @@ describe('Command uwf ', () => {
     '"init" initialize project from scratch correctly',
     async () => {
       const libDir = path.join(__dirname, '../packages/uwf');
-      const userDir = path.join(process.env.HOME, 'tmpUserDir');
+      const userDir = path.join(process.env.HOME!, 'tmpUserDir');
       const packedName = './uwf-packed.tgz';
 
       await cleanDir(userDir);
@@ -87,10 +88,9 @@ describe('Command uwf ', () => {
 
       const app = startApp(userDir);
       await verifyApp();
-      app.kill();
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      app.kill('SIGKILL');
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve, reject) => {
+        terminate(app.pid, (err: any) => (err ? reject(err) : resolve()));
+      });
 
       // Teardown
       await cleanDir(userDir);
