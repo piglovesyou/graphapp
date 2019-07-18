@@ -46,7 +46,7 @@ describe.only('Command uwf ', () => {
     '"init" initialize project from scratch correctly',
     async () => {
       const libDir = path.join(__dirname, '../packages/uwf');
-      const userDir = path.join(__dirname, 'tmpUserDir');
+      const userDir = path.join(process.env.HOME, 'tmpUserDir');
       const packedName = './uwf-packed.tgz';
 
       await cleanDir(userDir);
