@@ -45,7 +45,7 @@ describe('Command uwf ', () => {
       const cwd = path.resolve(__dirname, '../examples/basic');
       const app = startApp(cwd);
       await verifyApp();
-      app.kill();
+      await kill(app);
     },
     timeout * 2,
   );
