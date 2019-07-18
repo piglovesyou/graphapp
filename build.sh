@@ -13,5 +13,6 @@ yarn lerna bootstrap
 yarn lerna run prepack
 yarn lerna run codegen
 #yarn lint
-yarn test
+#yarn test
+yarn jest
 yarn lerna run build
