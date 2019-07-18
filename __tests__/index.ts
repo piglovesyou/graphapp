@@ -43,7 +43,7 @@ describe('Command uwf ', () => {
   it(
     '"starts" compiles and starts examples/basic correctly',
     async () => {
-      const port = 3001;
+      const port = 3010;
       const cwd = path.resolve(__dirname, '../examples/basic');
       const app = startApp(cwd, port);
       await verifyApp(port);
@@ -92,7 +92,7 @@ describe('Command uwf ', () => {
         cwd: userDir,
       });
 
-      const port = 3002;
+      const port = 3020;
       const app = startApp(userDir, port);
       console.info('verifying..');
       await verifyApp(port);
