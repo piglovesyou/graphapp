@@ -15,4 +15,4 @@ yarn lerna run codegen
 #yarn lint
 #yarn test
 yarn jest --verbose
-yarn lerna run build
+#yarn lerna run build
