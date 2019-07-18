@@ -88,6 +88,7 @@ describe('Command uwf ', () => {
 
       const app = startApp(userDir);
       await verifyApp();
+      console.log('terminating.................');
       await new Promise((resolve, reject) => {
         terminate(app.pid, (err: any) => (err ? reject(err) : resolve()));
       });
