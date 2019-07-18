@@ -12,6 +12,6 @@ yarn install
 yarn lerna bootstrap
 yarn lerna run prepack
 yarn lerna run codegen
-yarn lint
+#yarn lint
 yarn test
 yarn lerna run build

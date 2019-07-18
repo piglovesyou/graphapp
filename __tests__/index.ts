@@ -59,7 +59,7 @@ describe('Command uwf ', () => {
         { cwd: libDir },
       );
 
-      await execa('yarn', ['--force', '--verbose', 'add', '-D', packedName], {
+      await execa('yarn', ['--force', 'add', '-D', packedName], {
         cwd: userDir,
       });
 
