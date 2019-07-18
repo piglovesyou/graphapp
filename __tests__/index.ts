@@ -11,10 +11,10 @@ const timeout = 3 * 60 * 1000;
 const execa = (command: string, args: string[], opts?: _execa.Options) =>
   _execa(command, args, { stdout: process.stdout, ...opts });
 
-const verifyApp = async () => {
+const verifyApp = async (port: number) => {
   const expected = 'React Starter Kit - www.reactstarterkit.com';
   await waitOn({
-    resources: ['http://localhost:3000'],
+    resources: [`http://localhost:${port}`],
     timeout,
   });
   const text = await fetch('http://localhost:3000').then(r => r.text());
@@ -24,9 +24,10 @@ const verifyApp = async () => {
   assert.strictEqual(actual, expected);
 };
 
-const startApp = (cwd: string) =>
+const startApp = (cwd: string, port: number) =>
   execa('yarn', ['run', 'uwf', 'start', '--silent'], {
     cwd,
+    env: { PORT: String(port) },
   });
 
 const kill = async (app: _execa.ExecaChildProcess) => {
@@ -42,9 +43,10 @@ describe('Command uwf ', () => {
   it(
     '"starts" compiles and starts examples/basic correctly',
     async () => {
+      const port = 3001;
       const cwd = path.resolve(__dirname, '../examples/basic');
-      const app = startApp(cwd);
-      await verifyApp();
+      const app = startApp(cwd, port);
+      await verifyApp(port);
       await kill(app);
     },
     timeout * 2,
@@ -90,9 +92,10 @@ describe('Command uwf ', () => {
         cwd: userDir,
       });
 
-      const app = startApp(userDir);
+      const port = 3002;
+      const app = startApp(userDir, port);
       console.info('verifying..');
-      await verifyApp();
+      await verifyApp(port);
       console.info('verified');
 
       console.info('terminating..');
