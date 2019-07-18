@@ -91,6 +91,7 @@ describe('Command uwf ', () => {
       await new Promise((resolve, reject) => {
         terminate(app.pid, (err: any) => (err ? reject(err) : resolve()));
       });
+      console.log('terminated.................');
 
       // Teardown
       await cleanDir(userDir);
