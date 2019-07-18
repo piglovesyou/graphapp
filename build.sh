@@ -2,14 +2,15 @@
 
 set -e
 
-yarn cache clean
-rm -rf `yarn cache dir`
+npm i -g npm
+npm i -g yarn
+yarn install
+
+yarn cache clean uwf
+rm -rf `yarn cache dir`/.tmp
 
 yarn lerna bootstrap
 yarn lerna run prepack
-
-find `pwd`/packages/uwf/dist
-
 yarn lerna run codegen
 yarn lint
 yarn test

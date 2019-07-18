@@ -55,11 +55,11 @@ describe('Command uwf ', () => {
 
       await execa(
         'yarn',
-        ['pack', '--filename', path.join(userDir, 'uwf-packed.tgz')],
+        ['pack', '--filename', path.join(userDir, packedName)],
         { cwd: libDir },
       );
 
-      await execa('yarn', ['add', '-D', packedName], {
+      await execa('yarn', ['--force', '--verbose', 'add', '-D', packedName], {
         cwd: userDir,
       });
 
@@ -87,6 +87,6 @@ describe('Command uwf ', () => {
       // Teardown
       await cleanDir(userDir);
     },
-    timeout * 2,
+    timeout * 200,
   );
 });
