@@ -44,6 +44,11 @@ function createFileInfo(fileName: string): ModuleInfo {
     );
   }
 
+  if (!modulePath.startsWith('.')) {
+    // To load files as module instead of package
+    modulePath = `./${modulePath}`;
+  }
+
   return { modulePath, displayPath, varName };
 }
 

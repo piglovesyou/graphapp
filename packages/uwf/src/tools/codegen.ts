@@ -3,6 +3,11 @@ import getPort from 'get-port';
 import path from 'path';
 import { ApolloServer } from 'apollo-server';
 import { makeExecutableSchema } from 'apollo-server-express';
+import glob from 'fast-glob';
+import { fromStream } from 'hole';
+import { readFile, writeFile } from './lib/fs';
+import generateDts from './lib/generateDts';
+import generateDeps from './lib/generateDeps';
 import { buildDir, genDir, srcDir, userDir } from './lib/dirs';
 import prepareDeps from './lib/prepareDeps';
 import runWebpack from './lib/runWebpack';
@@ -50,25 +55,48 @@ export default async function codegen() {
   });
   const { server: httpServer } = await server.listen({ port });
 
-  await generate(
-    {
-      schema: `http://localhost:${port}/graphql`,
-      documents: path.join(userDir, '{routes,components}/**/*.graphql'),
-      generates: {
-        [path.join(genDir, 'dataBinders.tsx')]: {
-          plugins: [
-            'typescript',
-            'typescript-operations',
-            'typescript-react-apollo',
-          ],
-          config: {
-            // withHOC: false,
-            withHooks: true,
+  const gqlDocSearchPattern = path.join(
+    userDir,
+    '{routes,components}/**/*.graphql',
+  );
+  // @ts-ignore
+  await fromStream(glob.stream(gqlDocSearchPattern)).pipe(
+    async (gqlDocPath: any) => {
+      const dir = path.relative(userDir, path.dirname(gqlDocPath));
+      const baseName = path.basename(gqlDocPath, path.extname(gqlDocPath));
+      const tsxPath = path.join(genDir, dir, `${baseName}.tsx`);
+      generate(
+        {
+          schema: `http://localhost:${port}/graphql`,
+          documents: gqlDocPath,
+          generates: {
+            [tsxPath]: {
+              plugins: [
+                'typescript',
+                'typescript-operations',
+                'typescript-react-apollo',
+              ],
+              config: {
+                // withHOC: false,
+                withHooks: true,
+              },
+            },
           },
         },
-      },
+        true,
+      );
+      const gqlRelPath = path.relative(userDir, gqlDocPath);
+      const dtsPath = `${gqlRelPath}.d.ts`;
+      const tsxContent = await readFile(tsxPath);
+      const dtsContent = generateDts(String(tsxContent));
+      await writeFile(dtsPath, dtsContent);
     },
-    true,
+  );
+
+  await generateDeps(
+    path.join(genDir, 'dataBinders/**/*'),
+    'dataBinderDeps',
+    'any',
   );
 
   await new Promise(resolve => httpServer.close(resolve));
