@@ -37,6 +37,10 @@ function createFileInfo(fileName: string): ModuleInfo {
   let modulePath = path.relative(genDir, fileName);
   const ext = path.extname(modulePath);
 
+  if (!modulePath.startsWith('.')) {
+    // To load as module instead of package
+    modulePath = `./${modulePath}`;
+  }
   if (ext.startsWith('.ts')) {
     modulePath = path.join(
       path.dirname(modulePath),
