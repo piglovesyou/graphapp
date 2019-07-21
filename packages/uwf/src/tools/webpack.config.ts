@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import DataBinderResolverPlugin from "./lib/DataBinderResolverPlugin";
 import webpack from 'webpack';
 import WebpackAssetsManifest from 'webpack-assets-manifest';
 import nodeExternals from 'webpack-node-externals';
@@ -302,6 +303,17 @@ const config: WebpackOptions = {
           { name: '@config@', alias: path.join(srcDir, 'config') },
         ],
         'resolve',
+      ),
+      new DataBinderResolverPlugin(
+          'described-resolve',
+          {
+            issuer: path.join(userDir, 'routes'),
+            baseFrom: path.join(userDir, 'routes'),
+            extFrom: '.graphql',
+            baseTo: path.join(genDir, 'routes'),
+            extTo: '.tsx',
+          },
+          'resolve',
       ),
     ],
   },
