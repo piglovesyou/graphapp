@@ -1,70 +1,114 @@
 [![Build Status](https://travis-ci.org/piglovesyou/uwf.svg?branch=master)](https://travis-ci.org/piglovesyou/uwf)
+[![npm version](https://badge.fury.io/js/uwf.svg)](https://badge.fury.io/js/uwf)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/Quramy/ts-graphql-plugin/master/LICENSE.txt)
 
-_uwf_ is a GraphQL and React based web framework.
+_uwf_ is a GraphQL Web framework.
 
 ## Concept
 
-GraphQL is what conciliates troubles between UI and data, including one from database, external RESTful API and even client-side state. _uwf_ boosts up developers to get the benefits through a Next.js-like entrypoint.
+GraphQL provides not only many solutions to Web Front-end, but a way to think how Web application can organise data including those of both server-side resolved and client-side resolved.
 
-#### Features:
+_uwf_ boosts up development to get the benefits through a Next.js-like entrypoint.
 
-- Auto wiring-up for routes and GraphQL schema/resolvers
-- Server Side Rendering
-- Bundling optimised production build
+### Features:
 
-#### Bound technology stack:
+- Able to import Apollo data binders by `import { useData, withData } from './data.graphql'`
+- Auto wire-up of GraphQL schema, GraphQL resolver and route (pages) files
+- Server-side rendering
+- Building optimised bundle
 
-- All the Apollo toolset
-- Webpack for development and production build
-- TypeScript
-- React
-- Passport for authentication
-
-#### Heavily inspired by:
-
-- Apollo for its GraphQL perspective
-- Next.js for its webpack magic and File System based routing
-- React Starter Kit for its decent modern boilerplate defaults
-
-## Usage
-
-Install
+## Getting Started
 
 ```bash
-$ yarn add uwf react react-dom
-```
+# Install necessities
+$ npm install -D uwf
+$ npm install -S react react-dom
 
-(TBD) Initialize directories
+# Place project boilerplate files
+$ npx uwf init
 
-```bash
-$ yarn uwf init
-```
+# Start development
+$ npx uwf start
 
-Start development server
+# Build production app
+$ npx uwf build
 
-```bash
-$ yarn uwf start
-```
-
-Build production code
-
-```bash
-$ yarn uwf build
+# Run production app
 $ cd build
+$ npm install
 $ node server.js
 ```
 
-## API
+## Special Directories
 
-#### `./routes/**/*.tsx`
+_uwf_ recognized six directories in project root as special: `data`, `state`, `route`, `components`, `public` and `config`.
 
-Directories and file names of `./routes/**/*.tsx` are interpreted as page routes. `./routes/index.tsx` is for a root page and `./routes/about.tsx` is for a `./about` route. Other extensions such as `.css` are all ignored, so feel free to place those to import from `.tsx`.
+### `data` and `states` - Your GraphQL Definition
 
-> `./routes/about.tsx` is equivalent to `./routes/about/index.tsx`
+- `./data/*.graphql`
+- `./data/*/*.ts`
+- `./state/*.graphql`
+- `./state/*/*.ts`
+- `./state/rootValue.ts`
 
-Also `./routes/posts/_id.tsx` generates `/posts/:id` route so use the parameter through `AppContext`.
+```
+(root)
+  |
+  +--+ data   // Server-side GraphQL Types and its resolvers go hrere
+  |     +
+  |     |
+  |     +--+ schema.graphql   // `data/*.graphql` are recognized
+  |     |                     // as GraphQL schema. Define your types here
+  |     |
+  |     +--+ Query            // Dirs of `data/[A-Z]*` are recognized
+  |     |     |
+  |     |     +---+ posts.ts  // `data/[A-Z]*/*.ts` are recognized as
+  |     |     |               // field resolvers
+  |     |     |               // This resolves `query { posts }`
+  |     |     |
+  |     |     +---+ users.ts  // resolves `query { users }`
+  |     |
+  |     +--+ Mutation
+  |     |     |
+  |     |     +---+ post.ts   // resolves `mutation { post }`
+  |     |
+  |     +--+ Post   // Any `data/[A-Z]*/*.ts` are recognized as types
+  |     |     |
+  |     |     +---+ comments.ts // resolves `comments` field of type `Post`
+  |     |
+  |     +--+ lib    // Lowercase dirs are ignored by framework
+  |           |
+  |           +---+ myFns.ts  // Also ignored
+  |
+  |
+  +--+ state  // Client-side GraphQL Types and its resolvers go hrere
+  |     |
+  |     +--+ rootValue.ts   // `state/rootValue.ts` indicates
+  |     |                   // initial state for users
+  |     |
+  |     +--+ schema.graphql // Same as server-side, `state/*.graphql` are
+  |     |                   // recognized as GraphQL Schema, but
+  |     |                   // this is only for client-side, such as
+  |     |                   // `isModalOpen` or `selectedRows`
+  |     +--+ Query
+  |     |     |
+  |     |     +---+ isModalOpen.ts  // resolve `query { isModalOpen @client }`
+  |     |     |
+  |     |     +---+ selectedRows.ts  // resolve `query { selectedRows @client }`
+  |     |
+  |     +--+ Mutation
+  |     |     |
+  |     |     +---+ openModal.ts  // resolve `mutation { openModal @client }`
+  |     |     |
+  |     |     +---+ selectRows.ts  // resolve `mutation { selectRows @client }`
+  |     |
+  |     +--+ lib    // Lowercase letter dir is ignored by framework
+  |
+```
 
-```ts
+Also route variable is available. `./routes/posts/_id.tsx` generates `/posts/:id` so use the `id` parameter through `AppContext`.
+
+```tsx
 /* ./routes/posts/_id.tsx */
 import useAppContext from 'uwf/useAppContext'
 const PostDetail = () => {
@@ -74,27 +118,97 @@ const PostDetail = () => {
 export default
 ```
 
-#### `./data/*.graphql`
+### `routes` and `components` - Your Pages and GraphQL Documents (e.g. `query {}`)
 
-Server side GraphQL Schema. Multiple `.graphql` files are concatenated. Starting from one file `./data/schema.graphql` is a good idea.
+- `./routes/**/*.tsx`
+- `./routes/**/*.graphql`
+- `./components/**/*.graphql`
 
-#### `./data/{Query,Mutation,Subscription,OTHER_TYPES}/*.ts`
-
-Field resolvers for GraphQL Types. Expect a function to be `exprot default`. For example:
-
-```ts
-/* ./data/Query/posts.ts */
-export default function(parent, args, context) {
-  // resolve list of post data
-  return posts;
-}
+```
+(root)
+  |
+  +--+ routes   // Dirs and files of `routes/**/*.tsx` indicates your URL routes
+  |     +
+  |     |
+  |     +--+ index
+  |     |     |
+  |     |     +---+ index.tsx // `${hostname}/` is routed here
+  |     |     |
+  |     |     +---+ posts.graphql // `routes/**/*.graphql` are recognized as
+  |     |     |                   // GraphQL Documents (queries and mutations)
+  |     |     |
+  |     |     +---+ blaa.css  // Other extensions are ignored from framework
+  |     |
+  |     +--+ posts
+  |     |     |
+  |     |     +---+ index.tsx // `${hostname}/posts` is routed here
+  |     |
+  |     +--+ about.tsx  // `${hostname}/about` is routed here
+  |
+  +--+ components
+  |     |
+  |     +--+ modalState.ts   // `components/**/*.graphql` are also recognized
+  |     |                    // as GraphQL Documents
 ```
 
-The above function is used as a resolver of `type Query { posts: [Posts] }`.
+### `public` - Your static files
 
-#### `./state/**`
+- `./public/**`
 
-Local state GraphQL Schema. The rules of directorie/file structure are same as `./data/**`. While resolver functions are only for client-side, GraphQL Schema are also used in server-side so auto-generated TypeScript types are available.
+Put all static files such as `favicon.ico` and `robots.txt` here.
+
+### `config` - Configure Application
+
+- `./config/*`
+
+You can overrides framework files in `node_modules/uwf/dist/config/{modules}` by placing one with the same file name.
+
+Example:
+
+`./config/Html.tsx`
+
+```tsx
+import {DefaultHtmlPropTypes} from 'uwf/types';
+
+export default const Html = (prop: uwf.HtmlPropTypes) => (
+  <html>
+    <head></head>
+    <body>{prop.children}</body>
+  </html>
+);
+```
+
+## APIs
+
+Your can import modules in `node_modules/uwf/dist/app` by `import 'uwf/{module}'.
+
+Example:
+
+```tsx
+import useStyles from 'uwf/useStyles';
+import s from './post.css';
+
+export default const Post = (props: {}) => {
+  useStyles(s);
+  return (...);
+};
+```
+
+## Attributes
+
+### Bound technology stack:
+
+- All the Apollo toolset
+- Webpack for development and production build
+- TypeScript
+- React
+- Passport for authentication
+
+### Heavily inspired by:
+
+- Apollo for its GraphQL perspective
+- Next.js for its webpack magic and File System based routing
+- React Starter Kit for its decent modern boilerplate defaults
 
 ## License
 
