@@ -233,13 +233,16 @@ async function start() {
   appPromiseIsResolved = true;
   appPromiseResolve!();
 
+  const port = process.env.PORT ? Number(process.env.PORT) : null;
+  if (Number.isNaN(port!)) throw new Error('never');
+
   // Launch the development server with Browsersync and HMR
   await new Promise((resolve, reject) =>
     browserSync.create().init(
       {
         // https://www.browsersync.io/docs/options
         server: { baseDir: '../public' },
-        port: process.env.PORT ? Number(process.env.PORT) : undefined,
+        ...(port ? { port } : {}),
         middleware: [server],
         open: process.argv.includes('--silent') ? false : 'local',
         ...(isDebug ? {} : { notify: false, ui: {} }),
