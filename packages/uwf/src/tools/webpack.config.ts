@@ -7,6 +7,7 @@ import cssnano from 'cssnano';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { WebpackOptions } from 'webpack/declarations/WebpackOptions';
 import MultiAliasPlugin from '@piglovesyou/enhanced-resolve/lib/AliasPlugin';
+import DataBinderResolverPlugin from './lib/DataBinderResolverPlugin';
 import { genDir, libDir, userDir, srcDir, buildDir } from './lib/dirs';
 import overrideRules from './lib/overrideRules';
 import pkg from '../../package.json';
@@ -295,12 +296,21 @@ const config: WebpackOptions = {
       new MultiAliasPlugin(
         'described-resolve',
         [
-          // { name: 'uwf', alias: path.join(srcDir, 'app') },
-          { name: 'uwf/dataBinders', alias: path.join(genDir, 'dataBinders') },
           { name: 'uwf', alias: path.join(srcDir, 'app') },
           { name: '@config@', alias: path.join(userDir, 'config') },
           { name: '@config@', alias: path.join(srcDir, 'config') },
         ],
+        'resolve',
+      ),
+      new DataBinderResolverPlugin(
+        'described-resolve',
+        {
+          issuer: path.join(userDir, 'routes'),
+          baseFrom: path.join(userDir, 'routes'),
+          extFrom: '.graphql',
+          baseTo: path.join(genDir, 'routes'),
+          extTo: '.tsx',
+        },
         'resolve',
       ),
     ],

@@ -3,7 +3,7 @@
 import Link from 'uwf/Link';
 import useStyles from 'uwf/useStyles';
 import React from 'react';
-import { withHomeNews } from 'uwf/dataBinders';
+import { withHomeNews } from './news.graphql';
 import Layout from '../../components/Layout';
 import s from './home.css';
 

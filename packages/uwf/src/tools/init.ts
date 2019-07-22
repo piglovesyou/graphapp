@@ -1,14 +1,14 @@
 import path from 'path';
 import execa from 'execa';
-import examplePkg from '../../examples/basic/package.json';
+import examplePkg from '../../dist/examples/basic/package.json';
 import { libDir, userDir } from './lib/dirs';
 import { copyFiles, readFile } from './lib/fs';
 
-const depthToTarget = 2;
-const exampleDir = 'examples/basic';
-// TODO: How to make it work with one pattern
-const targetPattern = `${exampleDir}/{components,data,public,routes,state,.gitignore}/**`;
-const rootFilesPattern = `${exampleDir}/.gitignore`;
+const EXAMPLE_DIR = 'dist/examples/basic';
+
+const targetPattern = `${EXAMPLE_DIR}/{components,data,public,routes,state,.gitignore}/**`;
+const rootFilesPattern = `${EXAMPLE_DIR}/.gitignore`;
+const depthToTarget = EXAMPLE_DIR.split('/').length;
 
 export default async function init() {
   const dirs = libDir.split(path.sep);

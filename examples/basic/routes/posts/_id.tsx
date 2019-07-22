@@ -2,8 +2,8 @@
 
 import React, { useContext } from 'react';
 import AppContext, { AppContextTypes } from 'uwf/AppContext';
-import { withNews } from 'uwf/dataBinders';
 import useStyles from 'uwf/useStyles';
+import { withNews } from './id.graphql';
 import Layout from '../../components/Layout';
 import s from './id.css';
 
