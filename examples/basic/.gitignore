@@ -1,4 +1,4 @@
-/build
+build
 node_modules
-/components/**/*.d.ts
-/routes/**/*.d.ts
+components/**/*.d.ts
+routes/**/*.d.ts

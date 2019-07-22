@@ -38,3 +38,6 @@ dist
 /__tests__/tmpUserDir
 
 uwf-*.tgz
+
+examples/**/components/**/*.d.ts
+examples/**/routes/**/*.d.ts
