@@ -1,12 +1,6 @@
 import ts from 'typescript';
 import detectNewline from 'detect-newline';
 
-// import path from "path";
-// import { stripComments } from 'jsonc-parser';
-// const { compilerOptions } = JSON.parse(stripComments(fs.readFileSync('./tsconfig.json').toString()));
-// const input = fs.readFileSync('./packages/uwf/__generated__/routes/index/news.tsx').toString();
-// const fileName = path.join(__dirname, './packages/uwf/__generated__/routes/index/news.tsx');
-
 const inputFileName = 'module.tsx';
 const options = {
   target: 8,
@@ -32,7 +26,8 @@ const getNewLine = (() => {
   let newLine: '\r\n' | '\n';
   return (input: string) => {
     if (newLine) return newLine;
-    return (newLine = detectNewline.graceful(input));
+    newLine = detectNewline.graceful(input);
+    return newLine;
   };
 })();
 
@@ -43,7 +38,7 @@ export default function generateDts(input: string): string {
 
   let outputText: string;
   const compilerHost = {
-    getSourceFile(fileName: string) {
+    getSourceFile(_fileName: string) {
       return sourceFile;
     },
     writeFile(name: string, text: string) {

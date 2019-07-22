@@ -65,7 +65,7 @@ export default async function codegen() {
       const dir = path.relative(userDir, path.dirname(gqlDocPath));
       const baseName = path.basename(gqlDocPath, path.extname(gqlDocPath));
       const tsxPath = path.join(genDir, dir, `${baseName}.tsx`);
-      generate(
+      await generate(
         {
           schema: `http://localhost:${port}/graphql`,
           documents: gqlDocPath,
