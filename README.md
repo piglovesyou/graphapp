@@ -71,7 +71,7 @@ const PostDetail = () => {
   const context = useAppContext()
   return <div>{context.params.id}</div>
 };
-export default 
+export default
 ```
 
 #### `./data/*.graphql`
@@ -80,7 +80,7 @@ Server side GraphQL Schema. Multiple `.graphql` files are concatenated. Starting
 
 #### `./data/{Query,Mutation,Subscription,OTHER_TYPES}/*.ts`
 
-Field resolvers for GraphQL Types.  Expect a function to be `exprot default`. For example:
+Field resolvers for GraphQL Types. Expect a function to be `exprot default`. For example:
 
 ```ts
 /* ./data/Query/posts.ts */
@@ -95,8 +95,6 @@ The above function is used as a resolver of `type Query { posts: [Posts] }`.
 #### `./state/**`
 
 Local state GraphQL Schema. The rules of directorie/file structure are same as `./data/**`. While resolver functions are only for client-side, GraphQL Schema are also used in server-side so auto-generated TypeScript types are available.
-
-#### `uwf/dataBinders`
 
 ## License
 

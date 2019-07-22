@@ -296,8 +296,6 @@ const config: WebpackOptions = {
       new MultiAliasPlugin(
         'described-resolve',
         [
-          // { name: 'uwf', alias: path.join(srcDir, 'app') },
-          { name: 'uwf/dataBinders', alias: path.join(genDir, 'dataBinders') },
           { name: 'uwf', alias: path.join(srcDir, 'app') },
           { name: '@config@', alias: path.join(userDir, 'config') },
           { name: '@config@', alias: path.join(srcDir, 'config') },
