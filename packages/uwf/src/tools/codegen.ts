@@ -5,7 +5,7 @@ import { ApolloServer } from 'apollo-server';
 import { makeExecutableSchema } from 'apollo-server-express';
 import glob from 'fast-glob';
 import { fromStream } from 'hole';
-import { readFile, writeFile } from './lib/fs';
+import { writeFile } from './lib/fs';
 import generateDts from './lib/generateDts';
 import generateDeps from './lib/generateDeps';
 import { buildDir, genDir, srcDir, userDir } from './lib/dirs';
@@ -86,9 +86,8 @@ export default async function codegen() {
         true,
       );
       const gqlRelPath = path.relative(userDir, gqlDocPath);
+      const dtsContent = generateDts(tsxPath);
       const dtsPath = `${gqlRelPath}.d.ts`;
-      const tsxContent = await readFile(tsxPath);
-      const dtsContent = generateDts(String(tsxContent));
       await writeFile(dtsPath, dtsContent);
     },
   );
