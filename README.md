@@ -46,7 +46,7 @@ npm install
 node server.js
 ```
 
-Production build of `uwf build` doesn't include `uwf`; it's optimised 👍
+Production build of `uwf build` doesn't depend on `uwf`; it's optimised 👍
 
 ## Special Directories
 
