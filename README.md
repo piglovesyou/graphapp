@@ -176,9 +176,9 @@ Example:
 `./config/Html.tsx`
 
 ```tsx
-import {DefaultHtmlPropTypes} from 'uwf/types';
+import { HtmlPropTypes } from 'uwf/types';
 
-export default const Html = (prop: uwf.HtmlPropTypes) => (
+export default const Html = (prop: HtmlPropTypes) => (
   <html>
     <head></head>
     <body>{prop.children}</body>
