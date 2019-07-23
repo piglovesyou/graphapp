@@ -2,7 +2,7 @@
 [![npm version](https://badge.fury.io/js/uwf.svg)](https://badge.fury.io/js/uwf)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/Quramy/ts-graphql-plugin/master/LICENSE.txt)
 
-_uwf_ is a GraphQL Web framework.
+_uwf_ is a GraphQL Web framework. _Note that the package name is still temporary._
 
 ## Concept
 
