@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/piglovesyou/uwf.svg?branch=master)](https://travis-ci.org/piglovesyou/uwf)
 [![npm version](https://badge.fury.io/js/uwf.svg)](https://badge.fury.io/js/uwf)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/Quramy/ts-graphql-plugin/master/LICENSE.txt)
-<a class="github-button" href="https://github.com/piglovesyou/uwf" data-icon="octicon-star" aria-label="Star piglovesyou/uwf on GitHub">Star</a>
+<a class="github-button" href="https://github.com/piglovesyou/uwf" data-icon="octicon-star" data-show-count="true" aria-label="Star piglovesyou/uwf on GitHub">Star</a>
 
 _uwf_ is a GraphQL Web framework. _Note that project is actively constructed and even the npm name can be renamed._
 
@@ -222,3 +222,6 @@ export default const Post = (props: {}) => {
 ## License
 
 MIT
+
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
