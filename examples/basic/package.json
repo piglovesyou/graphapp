@@ -1,6 +1,6 @@
 {
   "name": "uwf-examples-basic",
-  "version": "0.0.1-alpha.1",
+  "version": "0.0.1",
   "license": "MIT",
   "private": true,
   "dependencies": {
@@ -17,7 +17,7 @@
     "@types/node-fetch": "^2.3.7",
     "@types/react": "^16.8.23",
     "typescript": "^3.5.3",
-    "uwf": "^0.0.1-alpha.1"
+    "uwf": "^0.0.1"
   },
   "scripts": {
     "start": "uwf start",
