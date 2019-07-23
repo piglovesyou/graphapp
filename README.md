@@ -52,7 +52,7 @@ Production build of `uwf build` doesn't depend on `uwf`; it's optimised 👍
 
 _uwf_ recognized six directories in project root as special: `data`, `state`, `route`, `components`, `public` and `config`.
 
-### `data` and `states` - Your GraphQL Definition
+### `data` and `states` - Your GraphQL Definitions
 
 - `./data/*.graphql`
 - `./data/*/*.ts`
