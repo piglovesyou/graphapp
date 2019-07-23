@@ -1,21 +1,9 @@
 import React from 'react';
 import serialize from 'serialize-javascript';
 import config from '@config@/config';
+import { HtmlPropTypes } from '../app/types';
 
 /* eslint-disable react/no-danger */
-
-interface PropTypes {
-  title: string;
-  description: string;
-  styles?: Array<{
-    id: string;
-    cssText: string;
-  }>;
-
-  scripts?: string[];
-  app: any;
-  children: string;
-}
 
 const Html = ({
   title,
@@ -24,7 +12,7 @@ const Html = ({
   scripts = [],
   app,
   children,
-}: PropTypes) => (
+}: HtmlPropTypes) => (
   <html className="no-js" lang="en">
     <head>
       <meta charSet="utf-8" />

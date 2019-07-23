@@ -7,7 +7,6 @@ import glob from 'fast-glob';
 import { fromStream } from 'hole';
 import { writeFile } from './lib/fs';
 import generateDts from './lib/generateDts';
-import generateDeps from './lib/generateDeps';
 import { buildDir, genDir, srcDir, userDir } from './lib/dirs';
 import prepareDeps from './lib/prepareDeps';
 import runWebpack from './lib/runWebpack';
@@ -90,12 +89,6 @@ export default async function codegen() {
       const dtsPath = `${gqlRelPath}.d.ts`;
       await writeFile(dtsPath, dtsContent);
     },
-  );
-
-  await generateDeps(
-    path.join(genDir, 'dataBinders/**/*'),
-    'dataBinderDeps',
-    'any',
   );
 
   await new Promise(resolve => httpServer.close(resolve));

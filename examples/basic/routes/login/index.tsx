@@ -5,19 +5,17 @@ import React from 'react';
 import Layout from '../../components/Layout';
 import s from './login.css';
 
-type PropTypes = {
-  title: string;
-};
+type PropTypes = {};
 
 export const title = 'Log In';
 
-const Login = (props: PropTypes) => {
+const Login = (_props: PropTypes) => {
   useStyles(s);
   return (
     <Layout>
       <div className={s.root}>
         <div className={s.container}>
-          <h1>{props.title}</h1>
+          <h1>(TODO: render title)</h1>
           <p className={s.lead}>
             Log in with your username or company email address.
           </p>

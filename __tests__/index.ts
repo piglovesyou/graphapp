@@ -1,11 +1,11 @@
 import _execa from 'execa';
 import path from 'path';
 import waitOn from 'wait-on';
-import { makeDir, cleanDir } from 'uwf/src/tools/lib/fs';
 import i from 'log-symbols';
 import fetch from 'node-fetch';
 import assert from 'assert';
 import terminate from 'terminate';
+import { makeDir, cleanDir } from '../packages/uwf/src/tools/lib/fs';
 
 const timeout = 3 * 60 * 1000;
 
@@ -86,14 +86,14 @@ describe('uwf ', () => {
         ['pack', '--filename', path.join(userDir, packedName)],
         { cwd: libDir },
       );
+      // Let user decide react version
+      await execa('yarn', ['add', 'react', 'react-dom'], { cwd: userDir });
       await execa('yarn', ['--force', 'add', '-D', packedName], {
         cwd: userDir,
       });
 
       info(`Command "init"`);
-      await execa('yarn', ['run', 'uwf', 'init'], {
-        cwd: userDir,
-      });
+      await execa('yarn', ['run', 'uwf', 'init'], { cwd: userDir });
       await verifyFileExistence(
         [
           // Verify example copy
@@ -104,15 +104,17 @@ describe('uwf ', () => {
         ].map(f => path.join(userDir, f)),
       );
 
+      info(`Test types`);
+      await execa('yarn', ['tsc'], { cwd: userDir });
+      success('Typed fine ⚡️');
+
       info(`Command "start"`);
       const app = startApp(userDir, port);
       await verifyApp(port);
       await kill(app);
 
       info(`Command "build"`);
-      await execa('yarn', ['run', 'uwf', 'build'], {
-        cwd: userDir,
-      });
+      await execa('yarn', ['run', 'uwf', 'build'], { cwd: userDir });
       await cleanDir(path.join(userDir, 'node_modules'));
       const buildDir = path.join(userDir, 'build');
       await execa('yarn', [], { cwd: buildDir });

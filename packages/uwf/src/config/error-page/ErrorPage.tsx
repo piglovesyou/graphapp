@@ -1,16 +1,9 @@
 import React from 'react';
 import withStyles from '@piglovesyou/isomorphic-style-loader/withStyles';
+import { ErrorPagePropTypes } from '../../app/types';
 import s from './ErrorPage.css';
 
-type PropTypes = {
-  error?: {
-    name: string;
-    message: string;
-    stack: string;
-  };
-};
-
-const ErrorPage = ({ error }: PropTypes) => {
+const ErrorPage = ({ error }: ErrorPagePropTypes) => {
   if (__DEV__ && error) {
     return (
       <div>

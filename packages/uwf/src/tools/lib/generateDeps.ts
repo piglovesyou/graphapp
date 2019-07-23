@@ -1,7 +1,9 @@
 import path from 'path';
 import createMD5Hash from './createMD5Hash';
-import { genDir, userDir } from './dirs';
+import { genDir, userDir, srcDir } from './dirs';
 import { readDir, writeFile } from './fs';
+
+const relSrcDir = path.relative(genDir, srcDir);
 
 type ModuleInfo = {
   modulePath: string;
@@ -14,6 +16,7 @@ function buildBindSchemaScript(
   moduleType: string,
 ) {
   return `/* Auto-generated. Do not edit. */
+import { ${moduleType} } from '${relSrcDir}/app/types';
 
 ${moduleInfoArray.reduce((acc, { modulePath, varName }) => {
   return `${acc}import * as ${varName} from '${modulePath}';

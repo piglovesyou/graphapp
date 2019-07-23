@@ -8,16 +8,32 @@ export default async function prepareDeps() {
   await generateDeps(
     'data/rootValue.ts',
     'serverRootValueDeps',
-    'uwf.ResolverDeps',
+    'RootValueDeps',
   );
-  await generateDeps('data/*/*.ts', 'serverResolverDeps', 'uwf.ResolverDeps');
-  await generateDeps('data/*.graphql', 'serverGraphqlDeps', 'uwf.GraphqlDeps');
+  await generateDeps(
+    'data/*/*.ts',
+    'serverResolverDeps',
+    'GraphQLResolverDeps',
+  );
+  await generateDeps(
+    'data/*.graphql',
+    'serverGraphqlDeps',
+    'GraphqlSchemaDeps',
+  );
   await generateDeps(
     'state/rootValue.ts',
     'clientRootValueDeps',
-    'uwf.ResolverDeps',
+    'RootValueDeps',
   );
-  await generateDeps('state/*/*.ts', 'clientResolverDeps', 'uwf.ResolverDeps');
-  await generateDeps('state/*.graphql', 'clientGraphqlDeps', 'uwf.GraphqlDeps');
+  await generateDeps(
+    'state/*/*.ts',
+    'clientResolverDeps',
+    'GraphQLResolverDeps',
+  );
+  await generateDeps(
+    'state/*.graphql',
+    'clientGraphqlDeps',
+    'GraphqlSchemaDeps',
+  );
   await generateRoutesDeps();
 }

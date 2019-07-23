@@ -1,6 +1,8 @@
 import path from 'path';
-import { genDir, userDir } from './dirs';
+import { genDir, userDir, srcDir } from './dirs';
 import { readDir, writeFile } from './fs';
+
+const relSrcDir = path.relative(genDir, srcDir);
 
 type PathInfo = {
   routePath: string;
@@ -17,7 +19,7 @@ const buildRouteChildScript = ({
 }: PathInfo): string => `
   {
     path: '${routePath}',
-    load: async (): Promise<uwf.RouteInfo> => ({
+    load: async (): Promise<RouteInfo> => ({
       module: await import(/* webpackChunkName: '${chunkName}' */ '${modulePath}'),
       chunkName: '${chunkName}',
       ext: '${ext}',
@@ -28,6 +30,7 @@ const buildRouteChildScript = ({
 const buildRoutesScript = (
   pathInfoArray: PathInfo[],
 ): string => `/* Auto-generated. Do not edit. */
+import { RouteInfo } from '${relSrcDir}/app/types';
 
 const routes = [
 ${pathInfoArray.map(buildRouteChildScript).join('')}

@@ -19,7 +19,8 @@
     "yarn.lock",
     "bin",
     "dist",
-    "examples"
+    "examples",
+    "typings"
   ],
   "dependencies": {
     "@babel/core": "^7.4.5",
@@ -36,6 +37,7 @@
     "@graphql-codegen/typescript-react-apollo": "^1.2.1",
     "@piglovesyou/enhanced-resolve": "^4.3.0",
     "@piglovesyou/isomorphic-style-loader": "^4.2.0",
+    "@types/graphql": "^14.2.0",
     "apollo-cache-inmemory": "^1.6.2",
     "apollo-client": "^2.6.2",
     "apollo-link": "^1.2.12",

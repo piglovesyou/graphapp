@@ -1,16 +1,10 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { ApolloProvider } from 'react-apollo';
 import StyleContext from '@piglovesyou/isomorphic-style-loader/StyleContext';
-import AppContext, { AppContextTypes } from '../app/AppContext';
+import { AppProps } from 'uwf/types';
+import AppContext from '../app/AppContext';
 
-interface Props {
-  insertCss: Function;
-  client: any;
-  context: AppContextTypes;
-  children: ReactNode;
-}
-
-const App = ({ client, insertCss, context, children }: Props) => (
+const App = ({ client, insertCss, context, children }: AppProps) => (
   // NOTE: If you need to add or modify header, footer etc. of the app,
   // please do that inside the Layout component.
   <ApolloProvider client={client}>

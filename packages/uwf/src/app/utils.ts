@@ -1,6 +1,7 @@
 import merge from 'lodash.merge';
 import { basename, extname } from 'path';
-import { GraphQLResolveInfo, FieldNode } from './types';
+import { GraphQLResolveInfo, FieldNode } from 'graphql';
+import { GraphQLResolverDeps } from './types';
 
 export type FieldMap = Map<string, FieldNode>;
 
@@ -16,7 +17,7 @@ export const getRequestedFieldMap = (info: GraphQLResolveInfo): FieldMap => {
 
 export const buildResolver = (
   rootDir: string,
-  resolverDeps: uwf.ResolverDeps[],
+  resolverDeps: GraphQLResolverDeps[],
 ) => {
   return resolverDeps.reduce((acc, [{ default: fn }, path]) => {
     const [target, type, name] = path.split('/');

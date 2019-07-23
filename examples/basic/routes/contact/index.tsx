@@ -3,19 +3,17 @@ import React from 'react';
 import Layout from '../../components/Layout';
 import s from './contact.css';
 
-type PropTypes = {
-  title: string;
-};
+type PropTypes = {};
 
 export const title = 'Contact Us';
 
-const Contact = (props: PropTypes) => {
+const Contact = (_: PropTypes) => {
   useStyles(s);
   return (
     <Layout>
       <div className={s.root}>
         <div className={s.container}>
-          <h1>{props.title}</h1>
+          <h1>(TODO: render title)</h1>
           <p>...</p>
         </div>
       </div>
