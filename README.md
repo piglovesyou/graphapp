@@ -2,51 +2,56 @@
 [![npm version](https://badge.fury.io/js/uwf.svg)](https://badge.fury.io/js/uwf)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/Quramy/ts-graphql-plugin/master/LICENSE.txt)
 
-_uwf_ is a GraphQL Web framework.
+_uwf_ is a GraphQL Web framework. _Note that project is actively constructed and even the npm name can be renamed._
 
 ## Concept
 
-GraphQL provides not only many solutions to Web Front-end, but a way to think how Web application can organise data including those of both server-side resolved and client-side resolved.
+GraphQL provides not only many solutions to Web Front-end, but a way to think how Web application can organise its data resolved in both server-side and client-side.
 
-_uwf_ boosts up development to get the benefits through a Next.js-like entrypoint.
+_uwf_ boosts up data binding process through GraphQL usage, with HMR development environment and production build functionality included out of the box.
 
 ### Features:
 
-- Able to import Apollo data binders by `import { useData, withData } from './data.graphql'`
-- Auto wire-up of GraphQL schema, GraphQL resolver and route (pages) files
-- Server-side rendering
+- Able to `import { useData, withData } from './query.graphql'`
+- Auto wire-up of GraphQL schema, GraphQL resolvers and URL routes
+- TypeScript, React and SSR are supported (and no other options 😉)
 - Building optimised bundle
 
 ## Getting Started
 
 ```bash
-# Install necessities
-$ npm install -D uwf
-$ npm install -S react react-dom
+# Initialize project
+mkdir my-uwf && cd $_
+npm init --yes
+
+# Install dependencies
+npm install -D uwf
+npm install -S react react-dom  # Peer deps
 
 # Place project boilerplate files
-$ npx uwf init
-$ npx tsc  # Enjoy types
+npx uwf init
+npx uwf codegen  # Generates wiring-up source and some .graphql.d.ts
+npx tsc  # Enjoy types
 
 # Start development
-$ npx uwf start  # Enjoy HMR
+npx uwf start  # Popup browser. Enjoy HMR
 
 # Build production app
-$ npx uwf build
+npx uwf build
 
 # Run production app
-$ cd build
-$ npm install
-$ node server.js
+cd build
+npm install
+node server.js
 ```
 
-Production build of `uwf build` doesn't include `uwf`; it consists of necessities.
+Production build of `uwf build` doesn't depend on `uwf`; it's optimised 👍
 
 ## Special Directories
 
 _uwf_ recognized six directories in project root as special: `data`, `state`, `route`, `components`, `public` and `config`.
 
-### `data` and `states` - Your GraphQL Definition
+### `data` and `states` - Your GraphQL Definitions
 
 - `./data/*.graphql`
 - `./data/*/*.ts`
@@ -150,21 +155,21 @@ export default
   |
   +--+ components
   |     |
-  |     +--+ modalState.ts   // `components/**/*.graphql` are also recognized
-  |     |                    // as GraphQL Documents
+  |     +--+ modalState.graphql // `components/**/*.graphql` are also recognized
+  |     |                       // as GraphQL Documents
 ```
 
 ### `public` - Your static files
 
 - `./public/**`
 
-Put all static files such as `favicon.ico` and `robots.txt` here.
+All files located under `public` are served as static files by your application. Put files such as `favicon.ico` and `robots.txt` here.
 
 ### `config` - Configure Application
 
 - `./config/*`
 
-You can overrides framework files in `node_modules/uwf/dist/config/{modules}` by placing one with the same file name.
+You can overrides framework files in `config`. `node_modules/uwf/dist/config/{modules}` by placing one with the same file name.
 
 Example:
 
