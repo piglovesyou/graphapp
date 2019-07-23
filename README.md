@@ -20,27 +20,32 @@ _uwf_ boosts up data binding process through GraphQL usage, with HMR development
 ## Getting Started
 
 ```bash
+# Initialize project
+mkdir my-uwf && cd $_
+npm init --yes
+
 # Install dependencies
-$ npm install -D uwf
-$ npm install -S react react-dom  # Peer deps
+npm install -D uwf
+npm install -S react react-dom  # Peer deps
 
 # Place project boilerplate files
-$ npx uwf init
-$ npx tsc  # Enjoy types
+npx uwf init
+npx uwf codegen  # Generates wiring-up source and some .graphql.d.ts
+npx tsc  # Enjoy types
 
 # Start development
-$ npx uwf start  # Enjoy HMR
+npx uwf start  # Popup browser. Enjoy HMR
 
 # Build production app
-$ npx uwf build
+npx uwf build
 
 # Run production app
-$ cd build
-$ npm install
-$ node server.js
+cd build
+npm install
+node server.js
 ```
 
-Production build of `uwf build` doesn't include `uwf`; it is optimised.
+Production build of `uwf build` doesn't include `uwf`; it's optimised 👍
 
 ## Special Directories
 
