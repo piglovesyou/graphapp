@@ -1,0 +1,18 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+body { background-color: ghostwhite; }
+
+ul li {
+  list-style-position: inside;
+  padding-left: 0;
+}
+
+@media only screen and (min-width: 1000px)  {
+  .inner { width: 800px }
+}
+@media only screen and (min-width: 1200px)  {
+  .inner { width: 1000px }
+}
