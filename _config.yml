@@ -2,4 +2,4 @@ theme: jekyll-theme-tactile
 title: uwf
 description: GraphQL and React based untitled web framework
 show_downloads: false
-#google_analytics: [Your Google Analytics tracking ID]
+google_analytics: UA-4588325-10
