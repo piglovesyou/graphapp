@@ -155,8 +155,8 @@ export default
   |
   +--+ components
   |     |
-  |     +--+ modalState.ts   // `components/**/*.graphql` are also recognized
-  |     |                    // as GraphQL Documents
+  |     +--+ modalState.graphql // `components/**/*.graphql` are also recognized
+  |     |                       // as GraphQL Documents
 ```
 
 ### `public` - Your static files
