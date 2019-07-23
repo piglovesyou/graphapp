@@ -6,15 +6,15 @@ _uwf_ is a GraphQL Web framework. _Note that the package name is still temporary
 
 ## Concept
 
-GraphQL provides not only many solutions to Web Front-end, but a way to think how Web application can organise data including those of both server-side resolved and client-side resolved.
+GraphQL provides not only many solutions to Web Front-end, but a way to think how Web application can organise its data resolved in both server-side and client-side.
 
-_uwf_ boosts up development to get the benefits through a Next.js-like entrypoint.
+_uwf_ boosts up data binding process through GraphQL usage, with HMR development environment and production build functionality included out of the box.
 
 ### Features:
 
-- Able to import Apollo data binders by `import { useData, withData } from './data.graphql'`
-- Auto wire-up of GraphQL schema, GraphQL resolver and route (pages) files
-- Server-side rendering
+- Able to `import { useData, withData } from './data.graphql'`
+- Auto wire-up of GraphQL schema, GraphQL resolvers and URL routes
+- TypeScript, React and SSR are supported (and no other options 😉)
 - Building optimised bundle
 
 ## Getting Started
