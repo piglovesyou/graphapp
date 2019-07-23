@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/piglovesyou/uwf.svg?branch=master)](https://travis-ci.org/piglovesyou/uwf)
 [![npm version](https://badge.fury.io/js/uwf.svg)](https://badge.fury.io/js/uwf)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/Quramy/ts-graphql-plugin/master/LICENSE.txt)
+<a class="github-button" href="https://github.com/piglovesyou/uwf" data-icon="octicon-star" aria-label="Star piglovesyou/uwf on GitHub">Star</a>
 
 _uwf_ is a GraphQL Web framework. _Note that project is actively constructed and even the npm name can be renamed._
 
@@ -163,13 +164,13 @@ export default
 
 - `./public/**`
 
-Put all static files such as `favicon.ico` and `robots.txt` here.
+All files located under `public` are served as static files by your application. Put files such as `favicon.ico` and `robots.txt` here.
 
 ### `config` - Configure Application
 
 - `./config/*`
 
-You can overrides framework files in `node_modules/uwf/dist/config/{modules}` by placing one with the same file name.
+You can overrides framework files in `config`. `node_modules/uwf/dist/config/{modules}` by placing one with the same file name.
 
 Example:
 
