@@ -7,11 +7,9 @@ import { withHomeNews } from './news.graphql';
 import Layout from '../../components/Layout';
 import s from './home.css';
 
-type Props = {};
-
 export const title = 'React Starter Kit';
 
-const Home = withHomeNews<Props>()(props => {
+const Home = withHomeNews()(props => {
   useStyles(s);
 
   const {

@@ -22,7 +22,7 @@ export type GraphqlSchemaDeps = ModuleInfo<{ default: string }>;
 
 export type RouteModule = {
   title?: string;
-  default: ComponentType;
+  default: ComponentType<RouteProps>;
 };
 
 export type RouteInfo = {
@@ -40,6 +40,10 @@ export type AppProps = {
   client: any;
   context: RouteContextTypes;
   children?: ReactNode;
+};
+
+export type RouteProps = {
+  routeContext: RouteContextTypes;
 };
 
 export type HtmlPropTypes = {

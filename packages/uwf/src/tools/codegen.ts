@@ -87,7 +87,13 @@ export default async function codegen() {
       const gqlRelPath = path.relative(userDir, gqlDocPath);
       const dtsContent = generateDts(tsxPath);
       const dtsPath = `${gqlRelPath}.d.ts`;
-      await writeFile(dtsPath, dtsContent);
+      await writeFile(dtsPath, dtsContent
+          // Attach RouteConte
+          .replace(/^/, `import { RouteProps } from 'uwf/types'\n`)
+          .replace(
+              /function with(.+?)<TProps,/,
+              'function with$1<TProps = RouteProps,')
+      );
     },
   );
 
