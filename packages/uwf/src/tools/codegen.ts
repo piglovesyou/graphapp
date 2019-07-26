@@ -14,6 +14,15 @@ import webpackConfig from './webpack.config';
 
 const [, serverConfig] = webpackConfig;
 
+const decorateDtsContent = (dtsContent: string) =>
+  dtsContent
+    // Bind RouteContext to HOC function
+    .replace(/^/, `import { RouteProps } from 'uwf/types'\n`)
+    .replace(
+      /function with(.+?)<TProps,/,
+      'function with$1<TProps = RouteProps,',
+    );
+
 /**
  * Generate Flow declarations from GraphQL. Since it requires
  * a running GraphQL server, it launches a server for the use.
@@ -87,7 +96,7 @@ export default async function codegen() {
       const gqlRelPath = path.relative(userDir, gqlDocPath);
       const dtsContent = generateDts(tsxPath);
       const dtsPath = `${gqlRelPath}.d.ts`;
-      await writeFile(dtsPath, dtsContent);
+      await writeFile(dtsPath, decorateDtsContent(dtsContent));
     },
   );
 

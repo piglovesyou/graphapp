@@ -1,27 +1,22 @@
 /* eslint-disable react/no-danger */
 
-import React, { useContext } from 'react';
-import AppContext, { AppContextTypes } from 'uwf/AppContext';
+import React from 'react';
 import useStyles from 'uwf/useStyles';
 import { withNews } from './id.graphql';
 import Layout from '../../components/Layout';
 import s from './id.css';
 
-type Props = {
-  context: AppContextTypes;
-};
-
 export const title = 'React Starter Kit';
 
-const Home = withNews<Props>({
+const Home = withNews({
   options: props => {
     const {
-      context: { params },
+      routeContext: { params },
     } = props;
     if (!params || !params.id) throw new Error('never');
     return {
       variables: {
-        link: params.id,
+        link: Array.isArray(params.id) ? params.id[0] : params.id,
       },
     };
   },
@@ -53,9 +48,4 @@ const Home = withNews<Props>({
   );
 });
 
-const HomeWithContext = () => {
-  const context = useContext(AppContext);
-  return <Home context={context} />;
-};
-
-export default HomeWithContext;
+export default Home;

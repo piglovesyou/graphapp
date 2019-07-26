@@ -1,6 +1,6 @@
 import { ComponentType, ReactNode } from 'react';
 import { IFieldResolver } from 'graphql-tools';
-import { AppContextTypes } from 'uwf/AppContext';
+import { RouteContextTypes } from 'uwf/RouteContext';
 
 export * from 'graphql';
 export * from 'graphql-tools';
@@ -22,7 +22,7 @@ export type GraphqlSchemaDeps = ModuleInfo<{ default: string }>;
 
 export type RouteModule = {
   title?: string;
-  default: ComponentType;
+  default: ComponentType<RouteProps>;
 };
 
 export type RouteInfo = {
@@ -38,9 +38,14 @@ export type RouteInfo = {
 export type AppProps = {
   insertCss: Function;
   client: any;
-  context: AppContextTypes;
+  context: RouteContextTypes;
   children?: ReactNode;
 };
+
+export type RouteProps = {
+  routeContext: RouteContextTypes;
+};
+
 export type HtmlPropTypes = {
   title: string;
   description: string;
@@ -52,6 +57,7 @@ export type HtmlPropTypes = {
   app: any;
   children: string;
 };
+
 export type ErrorPagePropTypes = {
   error?: {
     name: string;

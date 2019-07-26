@@ -1,5 +1,6 @@
 import React from 'react';
 import UniversalRouter, { Route } from 'universal-router';
+import { RouteContextTypes } from 'uwf/RouteContext';
 import children from '../../__generated__/routesDeps';
 
 async function action(context: any) {
@@ -37,7 +38,12 @@ export default new UniversalRouter(routes, {
   resolveRoute(context, params) {
     if (typeof context.route.load === 'function') {
       return context.route.load().then(({ module, chunkName }: any) => {
-        const component = React.createElement(module.default);
+        const routeContext: RouteContextTypes = {
+          pathname: context.pathname,
+          query: context.query,
+          params,
+        };
+        const component = React.createElement(module.default, { routeContext });
         return {
           chunks: [chunkName],
           title: module.title,

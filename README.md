@@ -114,18 +114,6 @@ _uwf_ recognized six directories in project root as special: `data`, `state`, `r
   |
 ```
 
-Also route variable is available. `./routes/posts/_id.tsx` generates `/posts/:id` so use the `id` parameter through `AppContext`.
-
-```tsx
-/* ./routes/posts/_id.tsx */
-import useAppContext from 'uwf/useAppContext'
-const PostDetail = () => {
-  const context = useAppContext()
-  return <div>{context.params.id}</div>
-};
-export default
-```
-
 ### `routes` and `components` - Your Pages and GraphQL Documents (e.g. `query {}`)
 
 - `./routes/**/*.tsx`
@@ -157,6 +145,25 @@ export default
   |     |
   |     +--+ modalState.graphql // `components/**/*.graphql` are also recognized
   |     |                       // as GraphQL Documents
+```
+
+`props.routeContext` is available in all route components.
+
+```tsx
+export type RouteContextTypes = {
+  pathname: string; // ex.) /about/me
+  query?: ParsedQuery<string>; // ex.) q of ?q=graphapp
+  params?: QueryParams; // ex.) id of /posts/:id
+};
+```
+
+A leading underscore of route directory/file name indicates route params.
+
+```tsx
+/* ./routes/posts/_id.tsx */
+export default const PostDetail = (props) => (
+  <div>{props.routeContext.params.id}</div>
+);
 ```
 
 ### `public` - Your static files
