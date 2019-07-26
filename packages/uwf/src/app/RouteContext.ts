@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 import { ParsedQuery } from 'query-string';
 import { QueryParams } from 'universal-router';
 
@@ -13,5 +13,7 @@ const RouteContext = createContext<RouteContextTypes>({
   query: {},
   params: {},
 });
+
+export const useRouteContext = () => useContext(RouteContext);
 
 export default RouteContext;
