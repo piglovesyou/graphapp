@@ -114,13 +114,13 @@ _uwf_ recognized six directories in project root as special: `data`, `state`, `r
   |
 ```
 
-Also route variable is available. `./routes/posts/_id.tsx` generates `/posts/:id` so use the `id` parameter through `AppContext`.
+Also route variable is available. `./routes/posts/_id.tsx` generates `/posts/:id` so use the `id` parameter through `RouteContext`.
 
 ```tsx
 /* ./routes/posts/_id.tsx */
-import useAppContext from 'uwf/useAppContext'
+import useRouteContext from 'uwf/useRouteContext'
 const PostDetail = () => {
-  const context = useAppContext()
+  const context = useRouteContext()
   return <div>{context.params.id}</div>
 };
 export default

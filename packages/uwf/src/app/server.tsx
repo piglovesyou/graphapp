@@ -25,7 +25,7 @@ import schema from './schema';
 // import assets from './asset-manifest.json'; // eslint-disable-line import/no-unresolved
 // @ts-ignore
 import chunks from './chunk-manifest.json'; // eslint-disable-line import/no-unresolved
-import { AppContextTypes } from './AppContext';
+import { RouteContextTypes } from './RouteContext';
 import {
   clientDefaults,
   clientResolvers,
@@ -159,7 +159,7 @@ app.get('*', async (req, res, next) => {
 
     // Global (context) variables that can be easily accessed from any React component
     // https://facebook.github.io/react/docs/context.html
-    const context: AppContextTypes = {
+    const context: RouteContextTypes = {
       // The twins below are wild, be careful!
       pathname: req.path,
       query: req.query,

@@ -1,14 +1,14 @@
 /* eslint-disable react/no-danger */
 
 import React, { useContext } from 'react';
-import AppContext, { AppContextTypes } from 'uwf/AppContext';
+import RouteContext, { RouteContextTypes } from 'uwf/RouteContext';
 import useStyles from 'uwf/useStyles';
 import { withNews } from './id.graphql';
 import Layout from '../../components/Layout';
 import s from './id.css';
 
 type Props = {
-  context: AppContextTypes;
+  context: RouteContextTypes;
 };
 
 export const title = 'React Starter Kit';
@@ -54,7 +54,7 @@ const Home = withNews<Props>({
 });
 
 const HomeWithContext = () => {
-  const context = useContext(AppContext);
+  const context = useContext(RouteContext);
   return <Home context={context} />;
 };
 

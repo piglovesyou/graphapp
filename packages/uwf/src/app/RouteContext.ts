@@ -1,16 +1,16 @@
 import { createContext } from 'react';
 import { ParsedQuery } from 'query-string';
 
-export type AppContextTypes = {
+export type RouteContextTypes = {
   pathname: string;
   query?: ParsedQuery<string>;
   params?: { [s: string]: string };
 };
 
-const AppContext = createContext<AppContextTypes>({
+const RouteContext = createContext<RouteContextTypes>({
   pathname: '',
   query: {},
   params: {},
 });
 
-export default AppContext;
+export default RouteContext;
