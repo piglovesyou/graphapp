@@ -1,5 +1,6 @@
 import React from 'react';
 import useStyles from 'uwf/useStyles';
+import Head from 'uwf/Head';
 import s from './Page.css';
 
 interface PropTypes {
@@ -11,6 +12,9 @@ const Page = ({ title, html }: PropTypes) => {
   useStyles(s);
   return (
     <div className={s.root}>
+      <Head>
+        <title>{title}</title>
+      </Head>
       <div className={s.container}>
         <h1>{title}</h1>
         <div

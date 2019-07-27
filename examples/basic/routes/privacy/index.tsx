@@ -3,8 +3,6 @@ import Layout from '../../components/Layout';
 import Page from '../../components/Page';
 import md from './privacy.md';
 
-export const { title } = md;
-
 const Privacy = () => (
   <Layout>
     <Page {...md} />

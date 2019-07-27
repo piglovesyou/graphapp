@@ -147,6 +147,20 @@ _uwf_ recognized six directories in project root as special: `data`, `state`, `r
   |     |                       // as GraphQL Documents
 ```
 
+Specify page titles and other metadata with `uwf/Head` component.
+
+```tsx
+const title = 'Home';
+export default const Home = () => (
+    <div>
+        <Head>
+            <title>{title}</title>
+        </Head>
+        <h1>{title}</h1>
+    </div>
+);
+```
+
 `props.routeContext` is available in all route components.
 
 ```tsx

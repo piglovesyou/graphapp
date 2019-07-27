@@ -8,11 +8,13 @@ import { createPath, Location } from 'history';
 import App from '@config@/App';
 import createCache from '@config@/createCache';
 import createApolloClient from '@config@/createApolloClient.client';
+import { removeUniversalPortals } from 'react-portal-universal';
 import history from './history';
-import { updateMeta } from './DOMUtils';
 import router from './router';
 import { RouteContextTypes } from './RouteContext';
 import { clientResolvers, clientTypeDefs } from './clientSchema';
+
+removeUniversalPortals();
 
 const apolloClient = createApolloClient({
   clientTypeDefs,
@@ -95,16 +97,6 @@ async function onLocationChange(location: Location, action?: any) {
           if (elem) elem.parentNode!.removeChild(elem);
           return;
         }
-
-        document.title = route.title;
-
-        updateMeta('description', route.description);
-        // Update necessary tags in <head> at runtime here, ie:
-        // updateMeta('keywords', route.keywords);
-        // updateCustomMeta('og:url', route.canonicalUrl);
-        // updateCustomMeta('og:image', route.imageUrl);
-        // updateLink('canonical', route.canonicalUrl);
-        // etc.
 
         let scrollX = 0;
         let scrollY = 0;

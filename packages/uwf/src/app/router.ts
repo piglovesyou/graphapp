@@ -3,17 +3,6 @@ import UniversalRouter, { Route } from 'universal-router';
 import { RouteContextTypes } from 'uwf/RouteContext';
 import children from '../../__generated__/routesDeps';
 
-async function action(context: any) {
-  const { next } = context;
-  const route = await next();
-
-  // Provide default values for title, description etc.
-  route.title = `${route.title || 'Untitled Page'} - www.reactstarterkit.com`;
-  route.description = route.description || '';
-
-  return route;
-}
-
 const notFoundRoute = {
   path: '(.*)',
   load: async () => {
@@ -31,7 +20,6 @@ const notFoundRoute = {
 const routes: Route = {
   path: '',
   children: [...children, notFoundRoute],
-  action,
 };
 
 export default new UniversalRouter(routes, {

@@ -21,7 +21,6 @@ export type GraphQLResolverDeps = ModuleInfo<{
 export type GraphqlSchemaDeps = ModuleInfo<{ default: string }>;
 
 export type RouteModule = {
-  title?: string;
   default: ComponentType<RouteProps>;
 };
 

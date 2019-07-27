@@ -19,6 +19,8 @@ import errorPageStyle from '@config@/error-page/ErrorPage.css';
 import passport from '@config@/passport';
 import config from '@config@/config';
 import createCache from '@config@/createCache';
+import { flushUniversalPortals } from 'react-portal-universal';
+import { appendUniversalPortals } from 'react-portal-universal/lib/server';
 import router from './router';
 // import models from './data/models';
 import schema from './schema';
@@ -181,10 +183,15 @@ app.get('*', async (req, res, next) => {
       </App>
     );
     await getDataFromTree(rootComponent);
+
+    // reactPortalUniversal is a singleton; it needs to flush portal content that getDataFromTree loads
+    flushUniversalPortals();
+
     data.children = await ReactDOM.renderToString(rootComponent);
     data.styles = [{ id: 'css', cssText: [...css].join('') }];
 
     const scripts = new Set();
+
     const addChunk = (chunk: string) => {
       if (chunks[chunk]) {
         chunks[chunk].forEach((asset: any) => scripts.add(asset));
@@ -205,8 +212,9 @@ app.get('*', async (req, res, next) => {
     };
 
     const html = ReactDOM.renderToStaticMarkup(<Html {...data} />);
+    const portalAppendedHtml = appendUniversalPortals(html);
     res.status(route.status || 200);
-    res.send(`<!doctype html>${html}`);
+    res.send(`<!doctype html>${portalAppendedHtml}`);
   } catch (err) {
     next(err);
   }

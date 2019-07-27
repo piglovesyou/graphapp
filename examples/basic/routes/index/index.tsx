@@ -1,13 +1,14 @@
 /* eslint-disable react/no-danger */
 
 import Link from 'uwf/Link';
+import Head from 'uwf/Head';
 import useStyles from 'uwf/useStyles';
 import React from 'react';
 import { withHomeNews } from './news.graphql';
 import Layout from '../../components/Layout';
 import s from './home.css';
 
-export const title = 'React Starter Kit';
+const title = 'React Starter Kit - www.reactstarterkit.com';
 
 const Home = withHomeNews()(props => {
   useStyles(s);
@@ -20,6 +21,10 @@ const Home = withHomeNews()(props => {
 
   return (
     <Layout>
+      <Head>
+        <title>{title}</title>
+      </Head>
+
       <div className={s.root}>
         <div className={s.container}>
           <p className={s.networkStatusMessage}>

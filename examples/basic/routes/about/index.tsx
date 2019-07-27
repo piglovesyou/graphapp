@@ -3,8 +3,6 @@ import Layout from '../../components/Layout';
 import Page from '../../components/Page';
 import md from './about.md';
 
-export const { title } = md;
-
 const About = () => (
   <Layout>
     <Page {...md} />

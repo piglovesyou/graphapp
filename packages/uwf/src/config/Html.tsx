@@ -5,20 +5,11 @@ import { HtmlPropTypes } from '../app/types';
 
 /* eslint-disable react/no-danger */
 
-const Html = ({
-  title,
-  description,
-  styles = [],
-  scripts = [],
-  app,
-  children,
-}: HtmlPropTypes) => (
+const Html = ({ styles = [], scripts = [], app, children }: HtmlPropTypes) => (
   <html className="no-js" lang="en">
     <head>
       <meta charSet="utf-8" />
       <meta httpEquiv="x-ua-compatible" content="ie=edge" />
-      <title>{title}</title>
-      <meta name="description" content={description} />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       {scripts.map(script => (
         <link key={script} rel="preload" href={script} as="script" />

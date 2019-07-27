@@ -1,19 +1,23 @@
 import useStyles from 'uwf/useStyles';
 import React from 'react';
+import Head from 'uwf/Head';
 import Layout from '../../components/Layout';
 import s from './Register.css';
 
 type PropTypes = {};
 
-export const title = 'New User Registration';
+const title = 'New User Registration';
 
 const Register = (_props: PropTypes) => {
   useStyles(s);
   return (
     <Layout>
+      <Head>
+        <title>{title}</title>
+      </Head>
       <div className={s.root}>
         <div className={s.container}>
-          <h1>(TODO: render title)</h1>
+          <h1>{title}</h1>
           <p>...</p>
         </div>
       </div>

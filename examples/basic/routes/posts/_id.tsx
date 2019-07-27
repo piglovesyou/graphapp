@@ -2,6 +2,7 @@
 
 import React from 'react';
 import useStyles from 'uwf/useStyles';
+import Head from 'uwf/Head';
 import { withNews } from './id.graphql';
 import Layout from '../../components/Layout';
 import s from './id.css';
@@ -31,6 +32,9 @@ const Home = withNews({
 
   return (
     <Layout>
+      <Head>
+        <title>{item.title}</title>
+      </Head>
       <div className={s.root}>
         <div className={s.container}>
           <article key={item.link} className={s.newsItem}>
