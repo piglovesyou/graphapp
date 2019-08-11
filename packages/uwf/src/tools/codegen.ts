@@ -13,6 +13,7 @@ import runWebpack from './lib/runWebpack';
 import webpackConfig from './webpack.config';
 
 const [, serverConfig] = webpackConfig;
+const isVerbose = process.argv.includes('--verbose');
 
 const decorateDtsContent = (dtsContent: string) =>
   dtsContent
@@ -90,6 +91,7 @@ export default async function codegen() {
               },
             },
           },
+          silent: !isVerbose,
         },
         true,
       );

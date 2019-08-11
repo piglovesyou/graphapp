@@ -14,6 +14,8 @@ import clean from './clean';
 
 import codegen from './codegen';
 
+const isVerbose = process.argv.includes('--verbose');
+
 // https://webpack.js.org/configuration/watch/#watchoptions
 const watchOptions = {
   // Watching may not work with NFS and machines in VirtualBox
@@ -36,7 +38,7 @@ function createCompilationPromise(
     });
 
     compiler.hooks.done.tap(name, stats => {
-      console.info(stats.toString(config.stats));
+      if (isVerbose) console.info(stats.toString(config.stats));
       const timeEnd = new Date();
       const time = timeEnd.getTime() - timeStart.getTime();
       if (stats.hasErrors()) {
