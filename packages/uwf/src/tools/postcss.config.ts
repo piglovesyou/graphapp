@@ -2,7 +2,7 @@
 
 import pkg from '../../package.json';
 
-const isDebug = !process.argv.includes('--release');
+const isDebug = process.argv.includes('--debug');
 const config = {
   // The list of plugins for PostCSS
   // https://github.com/postcss/postcss

@@ -13,7 +13,7 @@ import overrideRules from './lib/overrideRules';
 import pkg from '../../package.json';
 import postcssConfig from './postcss.config';
 
-const isDebug = !process.argv.includes('--release');
+const isDebug = process.argv.includes('--debug');
 const isVerbose = process.argv.includes('--verbose');
 const isAnalyze =
   process.argv.includes('--analyze') || process.argv.includes('--analyse');

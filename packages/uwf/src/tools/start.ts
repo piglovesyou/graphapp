@@ -14,8 +14,6 @@ import clean from './clean';
 
 import codegen from './codegen';
 
-const isDebug = !process.argv.includes('--release');
-
 // https://webpack.js.org/configuration/watch/#watchoptions
 const watchOptions = {
   // Watching may not work with NFS and machines in VirtualBox
@@ -65,6 +63,9 @@ let server: Application;
  * synchronizing URLs, interactions and code changes across multiple devices.
  */
 async function start() {
+  const isDebug = true;
+  process.argv.push('--debug');
+
   if (server) return server;
 
   await run(codegen);

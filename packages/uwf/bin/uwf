@@ -4,9 +4,9 @@
 
 const {resolve} = require('path');
 let srcDir = resolve(__dirname, '../dist');
-const isDevelop = process.argv.includes('--develop') || process.env.NODE_ENV === 'develop';
+const isDebug = process.argv.includes('--debug');
 
-if (isDevelop) {
+if (isDebug) {
   require('@babel/register')({
     extensions: ['.ts'],
     ...require('../../../babel.config.js'),

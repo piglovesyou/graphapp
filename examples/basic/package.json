@@ -22,7 +22,7 @@
   "scripts": {
     "start": "uwf start",
     "init": "uwf init",
-    "build": "uwf build --release",
+    "build": "uwf build",
     "codegen": "uwf codegen"
   }
 }
