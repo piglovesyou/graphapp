@@ -1,33 +1,25 @@
 /* eslint-disable react/no-danger */
 
-import React from 'react';
+import React, { FunctionComponent } from 'react';
+import { RouteProps } from 'uwf/types';
 import useStyles from 'uwf/useStyles';
 import Head from 'uwf/Head';
-import { withNews } from './id.graphql';
+import { useNewsQuery } from './id.graphql';
 import Layout from '../../components/Layout';
 import s from './id.css';
 
 export const title = 'React Starter Kit';
 
-const Home = withNews({
-  options: props => {
-    const {
-      routeContext: { params },
-    } = props;
-    if (!params || !params.id) throw new Error('never');
-    return {
-      variables: {
-        link: Array.isArray(params.id) ? params.id[0] : params.id,
-      },
-    };
-  },
-})(props => {
+const Home: FunctionComponent<RouteProps> = ({ routeContext: { params } }) => {
   useStyles(s);
 
-  const { loading, reactjsGetNews: item } = props.data!;
+  if (!params || !params.id) throw new Error('never');
+  const { loading, data } = useNewsQuery({
+    variables: { link: params.id as string },
+  });
+  const { reactjsGetNews: item } = data!;
 
   if (loading) return <div>Loading</div>;
-
   if (!item) return <div>Not found</div>;
 
   return (
@@ -50,6 +42,6 @@ const Home = withNews({
       </div>
     </Layout>
   );
-});
+};
 
 export default Home;

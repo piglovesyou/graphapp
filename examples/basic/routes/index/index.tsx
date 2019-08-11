@@ -2,22 +2,20 @@
 
 import Link from 'uwf/Link';
 import Head from 'uwf/Head';
+import { RouteProps } from 'uwf/types';
 import useStyles from 'uwf/useStyles';
-import React from 'react';
-import { withHomeNews } from './news.graphql';
+import React, { FunctionComponent } from 'react';
+import { useHomeNewsQuery } from './news.graphql';
 import Layout from '../../components/Layout';
 import s from './home.css';
 
 const title = 'React Starter Kit - www.reactstarterkit.com';
 
-const Home = withHomeNews()(props => {
+const Home: FunctionComponent<RouteProps> = () => {
   useStyles(s);
 
-  const {
-    loading,
-    reactjsGetAllNews,
-    networkStatus: { isConnected },
-  } = props.data!;
+  const { loading, data } = useHomeNewsQuery();
+  const { reactjsGetAllNews, networkStatus } = data!;
 
   return (
     <Layout>
@@ -27,9 +25,11 @@ const Home = withHomeNews()(props => {
 
       <div className={s.root}>
         <div className={s.container}>
-          <p className={s.networkStatusMessage}>
-            {isConnected ? 'Online' : 'Offline'}
-          </p>
+          {!loading && (
+            <p className={s.networkStatusMessage}>
+              {networkStatus.isConnected ? 'Online' : 'Offline'}
+            </p>
+          )}
           <h1>React.js News</h1>
           {loading || !reactjsGetAllNews
             ? 'Loading...'
@@ -56,6 +56,6 @@ const Home = withHomeNews()(props => {
       </div>
     </Layout>
   );
-});
+};
 
 export default Home;
