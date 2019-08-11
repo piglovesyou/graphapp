@@ -87,7 +87,19 @@ describe('uwf ', () => {
         { cwd: libDir },
       );
       // Let user decide react version
-      await execa('yarn', ['add', 'react', 'react-dom'], { cwd: userDir });
+      await execa(
+        'yarn',
+        [
+          'add',
+          'react',
+          'react-dom',
+          '@apollo/react-hooks',
+          '@apollo/react-hoc',
+          '@apollo/react-common',
+          '@apollo/react-components',
+        ],
+        { cwd: userDir },
+      );
       await execa('yarn', ['--force', 'add', '-D', packedName], {
         cwd: userDir,
       });

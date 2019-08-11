@@ -41,8 +41,15 @@ export default async function init() {
 
   const { dependencies, devDependencies } = examplePkg;
   // React version should be decided by user
-  delete dependencies.react;
-  delete dependencies['react-dom'];
+  [
+    'react',
+    'react-dom',
+    '@apollo/react-hooks',
+    '@apollo/react-hoc',
+    '@apollo/react-common',
+    '@apollo/react-components',
+    // @ts-ignore
+  ].forEach(name => delete dependencies[name]);
   // At this point user already has uwf
   delete devDependencies.uwf;
 
