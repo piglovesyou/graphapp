@@ -296,7 +296,7 @@ const config: WebpackOptions = {
       new MultiAliasPlugin(
         'described-resolve',
         [
-          { name: 'uwf', alias: path.join(srcDir, 'app') },
+          { name: 'snapp', alias: path.join(srcDir, 'app') },
           { name: '@config@', alias: path.join(userDir, 'config') },
           { name: '@config@', alias: path.join(srcDir, 'config') },
         ],
@@ -528,7 +528,7 @@ const serverConfig: WebpackOptions = {
     './asset-manifest.json',
     ...nodeModuleDirs.map(nodeModuleDir =>
       nodeExternals({
-        whitelist: [reStyle, reImage, /^uwf\/.+$/],
+        whitelist: [reStyle, reImage, /^snapp\/.+$/],
         modulesDir: nodeModuleDir,
       }),
     ),

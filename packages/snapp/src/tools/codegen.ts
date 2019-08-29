@@ -17,7 +17,7 @@ const [, serverConfig] = webpackConfig;
 const decorateDtsContent = (dtsContent: string) =>
   dtsContent
     // Bind RouteContext to HOC function
-    .replace(/^/, `import { RouteProps } from 'uwf/types'\n`)
+    .replace(/^/, `import { RouteProps } from 'snapp/types'\n`)
     .replace(
       /function with(.+?)<TProps,/,
       'function with$1<TProps = RouteProps,',

@@ -5,7 +5,7 @@ import i from 'log-symbols';
 import fetch from 'node-fetch';
 import assert from 'assert';
 import terminate from 'terminate';
-import { makeDir, cleanDir } from '../packages/uwf/src/tools/lib/fs';
+import { makeDir, cleanDir } from '../packages/snapp/src/tools/lib/fs';
 
 const timeout = 3 * 60 * 1000;
 
@@ -40,7 +40,7 @@ const verifyFileExistence = async (files: string[]) => {
 };
 
 const startApp = (cwd: string, port: number) =>
-  execa('yarn', ['run', 'uwf', 'start', '--silent'], {
+  execa('yarn', ['run', 'snapp', 'start', '--silent'], {
     cwd,
     env: { PORT: String(port) },
   });
@@ -56,7 +56,7 @@ const kill = async (app: _execa.ExecaChildProcess) => {
   success(`App ${app.pid} was terminated`);
 };
 
-describe('uwf ', () => {
+describe('snapp ', () => {
   it(
     'examples/basic starts correctly',
     async () => {
@@ -73,9 +73,9 @@ describe('uwf ', () => {
     'Commands "init" "start" and "build" run correctly',
     async () => {
       const port = 3020;
-      const libDir = path.join(__dirname, '../packages/uwf');
+      const libDir = path.join(__dirname, '../packages/snapp');
       const userDir = path.join(process.env.HOME!, 'tmpUserDir');
-      const packedName = './uwf-packed.tgz';
+      const packedName = './snapp-packed.tgz';
 
       info(`Preparing "${userDir}" project`);
       await cleanDir(userDir);
@@ -105,7 +105,7 @@ describe('uwf ', () => {
       });
 
       info(`Command "init"`);
-      await execa('yarn', ['run', 'uwf', 'init'], { cwd: userDir });
+      await execa('yarn', ['run', 'snapp', 'init'], { cwd: userDir });
       await verifyFileExistence(
         [
           // Verify example copy
@@ -126,7 +126,7 @@ describe('uwf ', () => {
       await kill(app);
 
       info(`Command "build"`);
-      await execa('yarn', ['run', 'uwf', 'build'], { cwd: userDir });
+      await execa('yarn', ['run', 'snapp', 'build'], { cwd: userDir });
       await cleanDir(path.join(userDir, 'node_modules'));
       const buildDir = path.join(userDir, 'build');
       await execa('yarn', [], { cwd: buildDir });

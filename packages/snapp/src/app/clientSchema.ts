@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { buildResolver } from 'uwf/utils';
+import { buildResolver } from 'snapp/utils';
 import graphqlDeps from '../../__generated__/clientGraphqlDeps';
 import clientResolverDeps from '../../__generated__/clientResolverDeps';
 import rootValue from '../../__generated__/clientRootValueDeps';

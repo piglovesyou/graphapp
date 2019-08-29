@@ -1,5 +1,5 @@
 import React from 'react';
-import useStyles from 'uwf/useStyles';
+import useStyles from 'snapp/useStyles';
 import s from './Feedback.css';
 
 const Feedback = () => {

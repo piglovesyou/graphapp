@@ -50,8 +50,8 @@ export default async function init() {
     '@apollo/react-components',
     // @ts-ignore
   ].forEach(name => delete dependencies[name]);
-  // At this point user already has uwf
-  delete devDependencies.uwf;
+  // At this point user already has snapp
+  delete devDependencies.snapp;
 
   const useYarn = await readFile(path.join(userDir, 'yarn.lock'))
     .then(() => true)

@@ -1,6 +1,6 @@
 import { ComponentType, ReactNode } from 'react';
 import { IFieldResolver } from 'graphql-tools';
-import { RouteContextTypes } from 'uwf/RouteContext';
+import { RouteContextTypes } from 'snapp/RouteContext';
 
 export * from 'graphql';
 export * from 'graphql-tools';

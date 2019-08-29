@@ -1,6 +1,6 @@
-import useStyles from 'uwf/useStyles';
+import useStyles from 'snapp/useStyles';
 import React from 'react';
-import Head from 'uwf/Head';
+import Head from 'snapp/Head';
 import Layout from '../../components/Layout';
 import s from './Register.css';
 

@@ -1,4 +1,4 @@
-import { IFieldResolver } from 'uwf/types';
+import { IFieldResolver } from 'snapp/types';
 import getNews from './lib/getNews';
 
 const reactjsGetAllNews: IFieldResolver<any, any> = async () => {

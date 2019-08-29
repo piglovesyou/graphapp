@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import useStyles from 'uwf/useStyles';
+import useStyles from 'snapp/useStyles';
 
 // external-global styles must be imported in your JS.
 import normalizeCss from 'normalize.css';

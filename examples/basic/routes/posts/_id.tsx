@@ -1,8 +1,8 @@
 /* eslint-disable react/no-danger */
 
 import React from 'react';
-import useStyles from 'uwf/useStyles';
-import Head from 'uwf/Head';
+import useStyles from 'snapp/useStyles';
+import Head from 'snapp/Head';
 import { withNews } from './id.graphql';
 import Layout from '../../components/Layout';
 import s from './id.css';

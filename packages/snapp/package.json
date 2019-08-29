@@ -1,5 +1,5 @@
 {
-  "name": "uwf",
+  "name": "snapp",
   "version": "0.0.1",
   "license": "MIT",
   "engines": {
@@ -12,7 +12,7 @@
     "not ie < 9"
   ],
   "bin": {
-    "uwf": "bin/uwf"
+    "snapp": "bin/snapp"
   },
   "files": [
     "package.json",

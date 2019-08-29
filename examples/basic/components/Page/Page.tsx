@@ -1,6 +1,6 @@
 import React from 'react';
-import useStyles from 'uwf/useStyles';
-import Head from 'uwf/Head';
+import useStyles from 'snapp/useStyles';
+import Head from 'snapp/Head';
 import s from './Page.css';
 
 interface PropTypes {

@@ -5,7 +5,7 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "uwf/*": ["node_modules/uwf/dist/app/*"]
+      "snapp/*": ["node_modules/snapp/dist/app/*"]
     },
     "typeRoots": ["typings", "node_modules/@types"],
     "allowSyntheticDefaultImports": true,

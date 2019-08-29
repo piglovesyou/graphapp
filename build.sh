@@ -8,7 +8,7 @@ npm i -g yarn
 yarn install
 
 # Yarn holds old uwd so it doesn't use new packed one
-yarn cache clean uwf
+yarn cache clean snapp
 yarn run rimraf `yarn cache dir`/.tmp
 
 yarn lerna bootstrap

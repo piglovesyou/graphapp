@@ -1,6 +1,6 @@
 import React from 'react';
 import UniversalRouter, { Route } from 'universal-router';
-import { RouteContextTypes } from 'uwf/RouteContext';
+import { RouteContextTypes } from 'snapp/RouteContext';
 import children from '../../__generated__/routesDeps';
 
 const notFoundRoute = {

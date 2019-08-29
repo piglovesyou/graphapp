@@ -1,8 +1,8 @@
 /* eslint-disable react/no-danger */
 
-import Link from 'uwf/Link';
-import Head from 'uwf/Head';
-import useStyles from 'uwf/useStyles';
+import Link from 'snapp/Link';
+import Head from 'snapp/Head';
+import useStyles from 'snapp/useStyles';
 import React from 'react';
 import { withHomeNews } from './news.graphql';
 import Layout from '../../components/Layout';

@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import history from 'uwf/history';
+import history from 'snapp/history';
 
 function isLeftClickEvent(event: MouseEvent) {
   return event.button === 0;

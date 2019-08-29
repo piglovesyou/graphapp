@@ -1,4 +1,4 @@
-import { IFieldResolver } from 'uwf/types';
+import { IFieldResolver } from 'snapp/types';
 
 const updateNetworkStatus: IFieldResolver<any, any> = (
   _: any,

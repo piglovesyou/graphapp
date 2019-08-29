@@ -1,7 +1,7 @@
 import React from 'react';
 import { ApolloProvider } from 'react-apollo';
 import StyleContext from '@piglovesyou/isomorphic-style-loader/StyleContext';
-import { AppProps } from 'uwf/types';
+import { AppProps } from 'snapp/types';
 import RouteContext from '../app/RouteContext';
 
 const App = ({ client, insertCss, context, children }: AppProps) => (

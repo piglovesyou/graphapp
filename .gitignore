@@ -33,7 +33,7 @@ yarn-error.log*
 
 dist
 
-uwf-*.tgz
+snapp-*.tgz
 
 examples/**/components/**/*.d.ts
 examples/**/routes/**/*.d.ts

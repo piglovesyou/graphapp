@@ -1,8 +1,8 @@
 {
-  "name": "uwf-monorepo",
+  "name": "snapp-monorepo",
   "version": "0.0.1",
   "private": true,
-  "repository": "https://github.com/piglovesyou/uwf",
+  "repository": "https://github.com/piglovesyou/snapp",
   "author": "piglovesyou <thepiglovesyou@gmail.com>",
   "license": "MIT",
   "dependencies": {},

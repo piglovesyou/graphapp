@@ -1,6 +1,6 @@
 import React, { ComponentType } from 'react';
 import cx from 'classnames';
-import useStyles from 'uwf/useStyles';
+import useStyles from 'snapp/useStyles';
 import s from './Navigation.css';
 import Link from '../Link';
 
