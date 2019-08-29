@@ -1,15 +1,15 @@
-[![Build Status](https://travis-ci.org/piglovesyou/uwf.svg?branch=master)](https://travis-ci.org/piglovesyou/uwf)
-[![npm version](https://badge.fury.io/js/uwf.svg)](https://badge.fury.io/js/uwf)
+[![Build Status](https://travis-ci.org/piglovesyou/snapp.svg?branch=master)](https://travis-ci.org/piglovesyou/snapp)
+[![npm version](https://badge.fury.io/js/snapp.svg)](https://badge.fury.io/js/snapp)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/Quramy/ts-graphql-plugin/master/LICENSE.txt)
-<a class="github-button" href="https://github.com/piglovesyou/uwf" data-icon="octicon-star" data-show-count="true" aria-label="Star piglovesyou/uwf on GitHub">Star</a>
+<a class="github-button" href="https://github.com/piglovesyou/snapp" data-icon="octicon-star" data-show-count="true" aria-label="Star piglovesyou/snapp on GitHub">Star</a>
 
-_uwf_ is a GraphQL Web framework. _Note that project is actively constructed and even the npm name can be renamed._
+Snapp is a GraphQL Web framework.
 
 ## Concept
 
 GraphQL provides not only many solutions to Web Front-end, but a way to think how Web application can organise its data resolved in both server-side and client-side.
 
-_uwf_ boosts up data binding process through GraphQL usage, with HMR development environment and production build functionality included out of the box.
+Snapp boosts up data binding process through GraphQL usage, with HMR development environment and production build functionality included out of the box.
 
 ### Features:
 
@@ -22,23 +22,23 @@ _uwf_ boosts up data binding process through GraphQL usage, with HMR development
 
 ```bash
 # Initialize project
-mkdir my-uwf && cd $_
+mkdir my-snapp && cd $_
 npm init --yes
 
 # Install dependencies
-npm install -D uwf
+npm install -D snapp
 npm install -S react react-dom  # Peer deps
 
 # Place project boilerplate files
-npx uwf init
-npx uwf codegen  # Generates wiring-up source and some .graphql.d.ts
+npx snapp init
+npx snapp codegen  # Generates wiring-up source and some .graphql.d.ts
 npx tsc  # Enjoy types
 
 # Start development
-npx uwf start  # Popup browser. Enjoy HMR
+npx snapp start  # Popup browser. Enjoy HMR
 
 # Build production app
-npx uwf build
+npx snapp build
 
 # Run production app
 cd build
@@ -46,11 +46,11 @@ npm install
 node server.js
 ```
 
-Production build of `uwf build` doesn't depend on `uwf`; it's optimised 👍
+Production build of `snapp build` doesn't depend on `snapp`; it's optimised 👍
 
 ## Special Directories
 
-_uwf_ recognized six directories in project root as special: `data`, `state`, `route`, `components`, `public` and `config`.
+Snapp recognized six directories in project root as special: `data`, `state`, `route`, `components`, `public` and `config`.
 
 ### `data` and `states` - Your GraphQL Definitions
 
@@ -148,7 +148,7 @@ _uwf_ recognized six directories in project root as special: `data`, `state`, `r
   |     |                       // as GraphQL Documents
 ```
 
-Specify page titles and other metadata with `uwf/Head` component.
+Specify page titles and other metadata with `snapp/Head` component.
 
 ```tsx
 const title = 'Home';
@@ -191,14 +191,14 @@ All files located under `public` are served as static files by your application.
 
 - `./config/*`
 
-You can overrides framework files in `config`. `node_modules/uwf/dist/config/{modules}` by placing one with the same file name.
+You can overrides framework files in `config`. `node_modules/snapp/dist/config/{modules}` by placing one with the same file name.
 
 Example:
 
 `./config/Html.tsx`
 
 ```tsx
-import { HtmlPropTypes } from 'uwf/types';
+import { HtmlPropTypes } from 'snapp/types';
 
 export default const Html = (prop: HtmlPropTypes) => (
   <html>
@@ -210,12 +210,12 @@ export default const Html = (prop: HtmlPropTypes) => (
 
 ## APIs
 
-Your can import modules in `node_modules/uwf/dist/app` by `import 'uwf/{module}'.
+Your can import modules in `node_modules/snapp/dist/app` by `import 'snapp/{module}'.
 
 Example:
 
 ```tsx
-import useStyles from 'uwf/useStyles';
+import useStyles from 'snapp/useStyles';
 import s from './post.css';
 
 export default const Post = (props: {}) => {
