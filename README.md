@@ -2,20 +2,20 @@
 [![npm version](https://badge.fury.io/js/snapp.svg)](https://badge.fury.io/js/snapp)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/Quramy/ts-graphql-plugin/master/LICENSE.txt)
 
-Snapp is a GraphQL Web framework. _Note that project is actively constructed and even the npm name can be renamed._
+Snapp is a GraphQL Web framework.
 
 ## Concept
 
-GraphQL provides not only many solutions to Web Front-end, but a way to think how Web application can organise its data resolved in both server-side and client-side.
+GraphQL provides not only many solutions to Web Front-end, but a way to think how Web application can organize data, resolved in both server-side and client-side.
 
-Snapp boosts up data binding process through GraphQL usage, with HMR development environment and production build functionality included out of the box.
+Snapp boosts up data binding process in web app through GraphQL, with HMR development environment and production build functionality included out of the box.
 
 ### Features:
 
-- Able to `import { useData, withData } from './query.graphql'`
-- Auto wire-up of GraphQL schema, GraphQL resolvers and URL routes
-- TypeScript, React and SSR are supported (and no other options 😉)
-- Building optimised bundle
+- Able to `import { useData } from './query.graphql'`, powered by [react-apollo](https://github.com/apollographql/react-apollo) and [GraphQL Codegen](https://github.com/dotansimha/graphql-code-generator)
+- Automatically wires-up code including schema, resolver to build GraphQL server
+- TypeScript, React, Passport and SSR are built-in (and mandatory to use)
+- Builds optimised bundle
 
 ## Getting Started
 
@@ -45,11 +45,11 @@ npm install
 node server.js
 ```
 
-Production build of `snapp build` doesn't depend on `snapp`; it's optimised 👍
+Production build doesn't depend on `snapp` as it's dev environment 👍
 
 ## Special Directories
 
-Snapp recognized six directories in project root as special: `data`, `state`, `route`, `components`, `public` and `config`.
+Snapp recognized six directories in project root as special:
 
 ### `data` and `states` - Your GraphQL Definitions
 
