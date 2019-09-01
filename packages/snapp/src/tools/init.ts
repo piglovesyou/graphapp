@@ -34,6 +34,7 @@ export default async function init() {
       soft: true,
       up: dirs.length + depthToTarget,
       verbose: process.argv.includes('--verbose'),
+      all: true, // Including dot files
     });
   await copyExampleFiles(targetPattern);
   await copyExampleFiles(rootFilesPattern);
